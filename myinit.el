@@ -56,7 +56,7 @@
 
 
 (setq org-agenda-files (list "~/Dropbox/Org/schedule.org"
-                             "~/.emacs.d/org/course.org"
+			     "~/.emacs.d/org/course.org"
 			     "~/.emacs.d/org/exercise.org"
 			     "~/.emacs.d/org/gtd.org"
 			     "~/.emacs.d/org/social.org"
@@ -79,7 +79,7 @@
     ("CANCELED" . (:foreground "blue" :weight bold))))
 
 (setq org-tag-alist '((:startgroup . nil)
-                      ("@work" . ?w)
+		      ("@work" . ?w)
 		      ("@home" . ?h)
 		      ("@course" . ?c)
 		      ("@social" . ?s)
@@ -98,42 +98,42 @@
   :config
   (progn
     (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
-          treemacs-deferred-git-apply-delay      0.5
-          treemacs-directory-name-transformer    #'identity
-          treemacs-display-in-side-window        t
-          treemacs-eldoc-display                 t
-          treemacs-file-event-delay              5000
-          treemacs-file-extension-regex          treemacs-last-period-regex-value
-          treemacs-file-follow-delay             0.2
-          treemacs-file-name-transformer         #'identity
-          treemacs-follow-after-init             t
-          treemacs-git-command-pipe              ""
-          treemacs-goto-tag-strategy             'refetch-index
-          treemacs-indentation                   2
-          treemacs-indentation-string            " "
-          treemacs-is-never-other-window         nil
-          treemacs-max-git-entries               5000
-          treemacs-missing-project-action        'ask
-          treemacs-no-png-images                 nil
-          treemacs-no-delete-other-windows       t
-          treemacs-project-follow-cleanup        nil
-          treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-          treemacs-position                      'left
-          treemacs-recenter-distance             0.1
-          treemacs-recenter-after-file-follow    nil
-          treemacs-recenter-after-tag-follow     nil
-          treemacs-recenter-after-project-jump   'always
-          treemacs-recenter-after-project-expand 'on-distance
-          treemacs-show-cursor                   nil
-          treemacs-show-hidden-files             t
-          treemacs-silent-filewatch              nil
-          treemacs-silent-refresh                nil
-          treemacs-sorting                       'alphabetic-asc
-          treemacs-space-between-root-nodes      t
-          treemacs-tag-follow-cleanup            t
-          treemacs-tag-follow-delay              1.5
-          treemacs-user-mode-line-format         nil
-          treemacs-width                         20)
+	  treemacs-deferred-git-apply-delay      0.5
+	  treemacs-directory-name-transformer    #'identity
+	  treemacs-display-in-side-window        t
+	  treemacs-eldoc-display                 t
+	  treemacs-file-event-delay              5000
+	  treemacs-file-extension-regex          treemacs-last-period-regex-value
+	  treemacs-file-follow-delay             0.2
+	  treemacs-file-name-transformer         #'identity
+	  treemacs-follow-after-init             t
+	  treemacs-git-command-pipe              ""
+	  treemacs-goto-tag-strategy             'refetch-index
+	  treemacs-indentation                   2
+	  treemacs-indentation-string            " "
+	  treemacs-is-never-other-window         nil
+	  treemacs-max-git-entries               5000
+	  treemacs-missing-project-action        'ask
+	  treemacs-no-png-images                 nil
+	  treemacs-no-delete-other-windows       t
+	  treemacs-project-follow-cleanup        nil
+	  treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+	  treemacs-position                      'left
+	  treemacs-recenter-distance             0.1
+	  treemacs-recenter-after-file-follow    nil
+	  treemacs-recenter-after-tag-follow     nil
+	  treemacs-recenter-after-project-jump   'always
+	  treemacs-recenter-after-project-expand 'on-distance
+	  treemacs-show-cursor                   nil
+	  treemacs-show-hidden-files             t
+	  treemacs-silent-filewatch              nil
+	  treemacs-silent-refresh                nil
+	  treemacs-sorting                       'alphabetic-asc
+	  treemacs-space-between-root-nodes      t
+	  treemacs-tag-follow-cleanup            t
+	  treemacs-tag-follow-delay              1.5
+	  treemacs-user-mode-line-format         nil
+	  treemacs-width                         20)
 
     ;; The default width and height of the icons is 22 pixels. If you are
     ;; using a Hi-DPI display, uncomment this to double the icon size.
@@ -143,7 +143,7 @@
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode t)
     (pcase (cons (not (null (executable-find "git")))
-                 (not (null treemacs-python-executable)))
+		 (not (null treemacs-python-executable)))
       (`(t . t)
        (treemacs-git-mode 'deferred))
       (`(t . _)
@@ -160,12 +160,12 @@
 
   :bind
   (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+	("M-0"       . treemacs-select-window)
+	("C-x t 1"   . treemacs-delete-other-windows)
+	("C-x t t"   . treemacs)
+	("C-x t B"   . treemacs-bookmark)
+	("C-x t C-t" . treemacs-find-file)
+	("C-x t M-t" . treemacs-find-tag)))
 
 
 (use-package treemacs-evil
@@ -453,14 +453,14 @@ mode-enable))
     ("css" . (ac-source-css-property ac-source-emmet-css-snippets))))
 
 (add-hook 'web-mode-before-auto-complete-hooks
-          '(lambda ()
-             (let ((web-mode-cur-language
-                    (web-mode-language-at-pos)))
-               (if (string= web-mode-cur-language "php")
-                   (yas-activate-extra-mode 'php-mode)
-                 (yas-deactivate-extra-mode 'php-mode))
-               (if (string= web-mode-cur-language "css")
-                   (setq emmet-use-css-transform t)
+	  '(lambda ()
+	     (let ((web-mode-cur-language
+		    (web-mode-language-at-pos)))
+	       (if (string= web-mode-cur-language "php")
+		   (yas-activate-extra-mode 'php-mode)
+		 (yas-deactivate-extra-mode 'php-mode))
+	       (if (string= web-mode-cur-language "css")
+		   (setq emmet-use-css-transform t)
 		 (setq emment-use-css-transform nil)))))
 ))
 ;; Web mode:1 ends here
@@ -472,8 +472,8 @@ mode-enable))
   :ensure t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
+	 ("\\.md\\'" . markdown-mode)
+	 ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "pandoc"))
 ;; Markdown mode:1 ends here
 
@@ -546,3 +546,8 @@ mode-enable))
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
 )
 ;; Docker:1 ends here
+
+;; [[file:myinit.org::*Imenu][Imenu:1]]
+(use-package imenu-list-minor-mode
+:ensure t)
+;; Imenu:1 ends here

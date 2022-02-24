@@ -693,14 +693,3 @@ See more, https://github.com/Silex/docker.el
   )
 
 #+END_SRC
-
-* Imenu
-menu produces menus for accessing locations in documents, typically in the current buffer.
-You can access the locations using an ordinary menu (menu bar or other) or using minibuffer completion.
-See more, https://www.emacswiki.org/emacs/ImenuMode#h5o-10
-#+BEGIN_SRC emacs-lisp
-
-  (use-package imenu-list-minor-mode
-  :ensure t)
-
-#+END_SRC
