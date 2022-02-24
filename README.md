@@ -1,4 +1,4 @@
-# Emacs configuration
+# Emacs configuration (refactor)
 
 ## Module list
 - Themes and Modeline
