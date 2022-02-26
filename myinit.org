@@ -693,3 +693,48 @@ See more, https://github.com/Silex/docker.el
   )
 
 #+END_SRC
+
+* helm
+helm mode
+See more, https://github.com/emacs-helm/helm
+#+BEGIN_SRC emacs-lisp
+
+  (use-package helm
+  :ensure t)
+
+#+END_SRC
+
+* multiple-cursors
+multiple-cursors
+See more, https://github.com/magnars/multiple-cursors.el
+#+BEGIN_SRC  emacs-lisp
+
+  (defun gpolonkai/no-blink-matching-paren ()
+    (customize-set-variable 'blink-matching-paren nil))
+
+  (defun gpolonkai/blink-matching-paren ()
+    (customize-set-variable 'blink-matching-paren t))
+
+  (use-package multiple-cursors
+    :init
+    (defvar gpolonkai/mc-prefix-map (make-sparse-keymap)
+      "Prefix keymap for multiple-cursors")
+    (define-prefix-command 'gpolonkai/mc-prefix-map)
+    (define-key global-map (kbd "C-c m") 'gpolonkai/mc-prefix-map)
+    :hook
+    (multiple-cursors-mode-enabled . gpolonkai/no-blink-matching-paren)
+    (multiple-cursors-mode-disabled . gpolonkai/blink-matching-paren)
+    :bind
+    (:map gpolonkai/mc-prefix-map
+     ("t" . mc/mark-all-like-this)
+     ("m" . mc/mark-all-like-this-dwim)
+     ("l" . mc/edit-lines)
+     ("e" . mc/edit-ends-of-lines)
+     ("a" . mc/edit-beginnings-of-lines)
+     ("n" . mc/mark-next-like-this)
+     ("p" . mc/mark-previous-like-this)
+     ("s" . mc/mark-sgml-tag-pair)
+     ("d" . mc/mark-all-like-this-in-defun)
+     ("M-<mouse-1>" . mc/add-cursor-on-click)))
+
+#+END_SRC

@@ -547,7 +547,37 @@ mode-enable))
 )
 ;; Docker:1 ends here
 
-;; [[file:myinit.org::*Imenu][Imenu:1]]
-(use-package imenu-list-minor-mode
+;; [[file:myinit.org::*helm][helm:1]]
+(use-package helm
 :ensure t)
-;; Imenu:1 ends here
+;; helm:1 ends here
+
+;; [[file:myinit.org::*multiple-cursors][multiple-cursors:1]]
+(defun gpolonkai/no-blink-matching-paren ()
+  (customize-set-variable 'blink-matching-paren nil))
+
+(defun gpolonkai/blink-matching-paren ()
+  (customize-set-variable 'blink-matching-paren t))
+
+(use-package multiple-cursors
+  :init
+  (defvar gpolonkai/mc-prefix-map (make-sparse-keymap)
+    "Prefix keymap for multiple-cursors")
+  (define-prefix-command 'gpolonkai/mc-prefix-map)
+  (define-key global-map (kbd "C-c m") 'gpolonkai/mc-prefix-map)
+  :hook
+  (multiple-cursors-mode-enabled . gpolonkai/no-blink-matching-paren)
+  (multiple-cursors-mode-disabled . gpolonkai/blink-matching-paren)
+  :bind
+  (:map gpolonkai/mc-prefix-map
+   ("t" . mc/mark-all-like-this)
+   ("m" . mc/mark-all-like-this-dwim)
+   ("l" . mc/edit-lines)
+   ("e" . mc/edit-ends-of-lines)
+   ("a" . mc/edit-beginnings-of-lines)
+   ("n" . mc/mark-next-like-this)
+   ("p" . mc/mark-previous-like-this)
+   ("s" . mc/mark-sgml-tag-pair)
+   ("d" . mc/mark-all-like-this-in-defun)
+   ("M-<mouse-1>" . mc/add-cursor-on-click)))
+;; multiple-cursors:1 ends here
