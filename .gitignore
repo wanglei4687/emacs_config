@@ -1,15 +1,23 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+elpa/
 
-# Test binary, built with `go test -c`
-*.test
+auto-save-list/
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+.cache/
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+transient/
+
+recentf
+
+elpy/
+
+tramp
+
+myinit.el
+
+myinit.org_archive
+
+quelpa/
+
+org/
+
+myinit.el

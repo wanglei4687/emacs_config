@@ -21,7 +21,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(yaml org-bullets use-package monokai-pro-theme doom-themes doom-modeline color-theme-modern)))
+   '(ag yaml org-bullets use-package monokai-pro-theme doom-themes doom-modeline color-theme-modern))
+ '(use-package-always-ensure t)
+ '(use-package-verbose nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

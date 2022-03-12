@@ -1,11 +1,59 @@
 #+STARTUP: overview
 #+PROPERTY: header-args :comments yes :results silent
 
-* Repos 
+* package archives
 Add package website to list
 #+BEGIN_SRC emacs-lisp
 
-  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+(require 'package)
+(add-to-list 'package-archives
+             '("gnu" . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("org" . "https://orgmode.org/elpa/") t)
+
+#+END_SRC
+
+* pre load
+** conifg use-packge and preload bind-key
+#+BEGIN_SRC emacs-lisp
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(require 'use-package)
+
+(customize-set-variable 'use-package-always-ensure t)
+(customize-set-variable 'use-package-verbose nil)
+
+(use-package bind-key)
+
+
+#+END_SRC
+
+** install and configure Quelpa
+#+BEGIN_SRC emacs-lisp
+
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+    (eval-buffer)
+    (quelpa-self-upgrade)))
+
+#+END_SRC
+
+*** Quelpa-use-package
+#+BEGIN_SRC emacs-lisp
+
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+(require 'quelpa-use-package)
 
 #+END_SRC
 
@@ -699,8 +747,7 @@ helm mode
 See more, https://github.com/emacs-helm/helm
 #+BEGIN_SRC emacs-lisp
 
-  (use-package helm
-  :ensure t)
+
 
 #+END_SRC
 
@@ -738,3 +785,21 @@ See more, https://github.com/magnars/multiple-cursors.el
      ("M-<mouse-1>" . mc/add-cursor-on-click)))
 
 #+END_SRC
+
+* text-scale
+Easily adjust the font size in all Emacs frames
+see more, https://github.com/purcell/default-text-scale
+#+BEGIN_SRC emacs-lisp
+
+  (use-package default-text-scale
+      :ensure t
+      :config
+      (setq default-text-scale-amount 10)
+      :bind
+      ;; Plus makes it better
+      ("M-+" . default-text-scale-increase)
+      ;; Underscore makes it smaller (- is already bound)
+      ("M-_" . default-text-scale-decrease))
+
+#+END_SRC
+
