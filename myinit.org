@@ -765,6 +765,7 @@ see more, https://github.com/purcell/default-text-scale
       ("M-_" . default-text-scale-decrease))
 
 #+END_SRC
+
 * editorconfig
 editor format plugin
 see more, https://github.com/editorconfig/editorconfig-emacs
