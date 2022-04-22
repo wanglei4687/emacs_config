@@ -90,7 +90,7 @@ Editor themes, see more https://github.com/hlissner/emacs-doom-themes
   (require 'doom-modeline)
   (doom-modeline-init)
 
-  (load-theme 'doom-monokai-classic  t)
+  (load-theme 'doom-zenburn  t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
