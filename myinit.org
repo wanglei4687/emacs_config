@@ -459,14 +459,19 @@ See more: http://company-mode.github.io/
 #+BEGIN_SRC emacs-lisp
 
   (use-package company
-    :ensure t
-    :config
-    (setq company-idle-delay 0)
-    (setq company-minimum-prefix-length 3)
-    (global-company-mode t))
+  :hook (emacs-lisp-mode . company-mode)
+  :config
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 3)
+  (global-company-mode t))
 
-    (use-package company-irony
-    :ensure t)
+  (use-package company-prescient
+  :after company
+  :config
+  (company-prescient-mode))
+
+  (use-package company-irony
+  :ensure t)
 
 #+END_SRC
 
@@ -532,11 +537,11 @@ See more, https://github.com/joaotavora/yasnippet
 
 #+END_SRC
 
-* languages mode
+* languages
 ** lsp mode
 #+BEGIN_SRC emacs-lisp
 
-(use-package lsp-mode
+  (use-package lsp-mode
   :commands lsp
   :diminish lsp-mode
   :bind
@@ -544,60 +549,56 @@ See more, https://github.com/joaotavora/yasnippet
   ("M-t" . 'lsp-find-type-definition)
   ("M-?" . 'lsp-find-references))
 
+  (use-package lsp-ui)
+
 #+END_SRC
 
 ** go mode
 #+BEGIN_SRC emacs-lisp
 
-  (use-package go-mode)
+  (use-package go-mode
+  :hook (go-mode . lsp))
 
 
 #+END_SRC
 
-** rust mode
-   
+** rust mode  
 #+BEGIN_SRC emacs-lisp
 
   (use-package rust-mode
-		:hook (rust-mode . lsp)
-		:bind
-			  ("C-c g" . rust-run)
-			  ("C-c t" . rust-test)
-			  ("C-c b" . cargo-process-build)
-			  :init
-			  (which-function-mode 1)
-			  (setq compilation-error-regexp-alist-alist
-			      (cons '(cargo "^\\([^ \n]+\\):\\([0-9]+\\):\\([0-9]+\\): \\([0-9]+\\):\\([0-9]+\\) \\(?:[Ee]rror\\|\\([Ww]arning\\)\\):" 1 (2 . 4) (3 . 5) (6))
-				compilation-error-regexp-alist-alist))
-			  :config
-			  (setq rust-format-on-save t))
+  :hook (rust-mode . lsp)
+  :bind
+  ("C-c g" . rust-run)
+  ("C-c t" . rust-test)
+  ("C-c b" . cargo-process-build)
+  :config
+  (setq rust-format-on-save t))
 
-		      ;; Add keybindings for interacting with Cargo
   (use-package cargo
-			:hook (rust-mode . cargo-minor-mode)
-			:diminish cargo-minor-mode)
+  :hook (rust-mode . cargo-minor-mode)
+  :diminish cargo-minor-mode)
 
   (use-package flycheck-rust
-		      :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
   (use-package racer
-		    :after rust-mode
-		    :diminish racer-mode
-		    :hook (rust-mode . racer-mode)
-		    :bind
-		    ("M-j" . racer-find-definition)
-		    ;; (:map racer-mode-map ("M-." . #'xref-find-definitions))
-		    (:map racer-mode-map ("M-." . nil))
-		    )
-
+  :after rust-mode
+  :diminish racer-mode
+  :hook (rust-mode . racer-mode)
+  :bind
+  ("M-j" . racer-find-definition)
+  ;; (:map racer-mode-map ("M-." . #'xref-find-definitions))
+  (:map racer-mode-map ("M-." . nil)))
 
 #+END_SRC
+
 ** toml mode
 #+BEGIN_SRC emacs-lisp
 
 (use-package toml-mode)
 
 #+END_SRC
+
 ** eldoc mode
 #+BEGIN_SRC emacs-lisp
 
@@ -618,7 +619,7 @@ See more, https://github.com/joaotavora/yasnippet
 ** markdown mode
 #+BEGIN_SRC emacs-lisp
 
-(use-package markdown-mode
+  (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode)))
 
@@ -626,7 +627,7 @@ See more, https://github.com/joaotavora/yasnippet
 ** dockerfile mode
 #+BEGIN_SRC emacs-lisp
 
-(use-package dockerfile-mode)
+  (use-package dockerfile-mode)
 
 #+END_SRC
 
@@ -779,4 +780,48 @@ see more, https://github.com/editorconfig/editorconfig-emacs
   :ensure t
   :config
   (editorconfig-mode 1))
+#+END_SRC
+
+* smartpare
+#+BEGIN_SRC emacs-lisp
+
+  (use-package smartparens
+  :hook ((prog-mode . smartparens-mode)
+	 (emacs-lisp-mode . smartparens-strict-mode))
+  :init
+  (setq sp-base-key-bindings 'sp)
+  :config
+  (define-key smartparens-mode-map [M-backspace] #'backward-kill-word)
+  (define-key smartparens-mode-map [M-S-backspace] #'sp-backward-unwrap-sexp)
+  (require 'smartparens-config))
+
+  (use-package ws-butler
+  :hook (prog-mode . ws-butler-mode))
+
+#+END_SRC
+
+* auto highlight symbol
+#+BEGIN_SRC emacs-lisp
+
+(use-package auto-highlight-symbol
+  :config
+  (global-auto-highlight-symbol-mode t))
+
+#+END_SRC
+
+* Highlight indentation
+#+BEGIN_SRC emacs-lisp
+
+  (use-package highlight-indentation)
+
+#+END_SRC
+
+* highlight the current line
+#+BEGIN_SRC emacs-lisp
+
+  (use-package hl-line
+  :config
+  (when window-system
+   (global-hl-line-mode)))
+
 #+END_SRC
