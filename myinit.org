@@ -513,9 +513,10 @@ See more, https://www.flycheck.org/en/latest/
 A template system
 See more, https://github.com/joaotavora/yasnippet
 #+BEGIN_SRC emacs-lisp
+  (setq-default abbrev-mode 1)
 
   (use-package yasnippet
-  :ensure t
+  :defer 2
   :init
   (bind-key "C-c y" 'yas-about)
   :config
@@ -524,7 +525,10 @@ See more, https://github.com/joaotavora/yasnippet
 
   ;; a collection of yasnippet snippets for many languages
   (use-package yasnippet-snippets
-  :ensure t)
+  :defer)
+
+  (use-package ivy-yasnippet
+  :bind ("C-c y" . ivy-yasnippet))
 
 #+END_SRC
 
@@ -545,7 +549,8 @@ See more, https://github.com/joaotavora/yasnippet
 ** go mode
 #+BEGIN_SRC emacs-lisp
 
-    (use-package go-mode)
+  (use-package go-mode)
+
 
 #+END_SRC
 
