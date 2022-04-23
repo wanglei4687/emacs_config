@@ -11,3 +11,12 @@ quelpa/
 org/
 myinit.el
 .lsp-session-v1
+# OSX leaves these everywhere on SMB shares
+._*
+
+# OSX trash
+.DS_Store
+# Emacs save files
+*~
+\#*\#
+.\#*
