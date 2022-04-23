@@ -685,10 +685,11 @@ see more, https://github.com/purcell/default-text-scale
 editor format plugin
 see more, https://github.com/editorconfig/editorconfig-emacs
 #+BEGIN_SRC emacs-lisp
-(use-package editorconfig
-  :ensure t
-  :config
-  (editorconfig-mode 1))
+
+  (use-package editorconfig
+    :ensure t
+    :config
+    (editorconfig-mode t))
 #+END_SRC
 
 * smartpare
@@ -732,5 +733,58 @@ see more, https://github.com/editorconfig/editorconfig-emacs
   :config
   (when window-system
    (global-hl-line-mode)))
+
+#+END_SRC
+
+* zygospore
+toggle other windows for maximum focus. when foucus is no longer needed, they
+can be toggled back. C-x 1 is conveniently bound to it.
+ #+BEGIN_SRC emacs-lisp
+
+   (use-package zygospore
+   :bind
+   (:map ctl-x-map
+     ("1" . zygospore-toggle-delete-other-windows)))
+
+ #+END_SRC
+
+* objed
+text object manipulation
+#+BEGIN_SRC emacs-lisp
+
+  (use-package objed
+  :demand t
+  :bind
+  (:map global-map
+      ("M-o" . objed-activate)))
+
+#+END_SRC
+
+* all the icons
+#+BEGIN_SRC emacs-lisp
+
+  (use-package all-the-icons)
+
+#+END_SRC
+
+* colorful
+#+BEGIN_SRC emacs-lisp
+
+  (use-package rainbow-delimiters
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
+
+  (use-package rainbow-identifiers)
+
+#+END_SRC
+
+* flyspell
+for all your spell-checking needs.
+#+BEGIN_SRC emacs-lisp
+
+  (use-package flyspell
+  :hook
+  (prog-mode . flyspell-prog-mode)
+  (text-mode . flyspell-mode))
 
 #+END_SRC
