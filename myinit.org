@@ -772,24 +772,12 @@ see more, https://github.com/editorconfig/editorconfig-emacs
 
 #+END_SRC
 
-* Highlight indentation
-#+BEGIN_SRC emacs-lisp
-
-  (use-package highlight-indentation
-  :hook
-  (python-mode . highlight-identation)
-  (go-mode . highlight-identation)
-  (rust-mode . highlight-identation))
-
-#+END_SRC
-
 * highlight the current line
 #+BEGIN_SRC emacs-lisp
 
   (use-package hl-line
   :config
-  (when window-system
-   (global-hl-line-mode t)))
+  (global-hl-line-mode t))
 
 #+END_SRC
 
@@ -860,7 +848,7 @@ for all your spell-checking needs.
 
   (use-package fancy-narrow
   :config
-  (fancy-narrow-mode))
+  (fancy-narrow-mode 1))
 
 #+END_SRC
 
@@ -965,7 +953,7 @@ show number of matches in the mode line when searching
     (use-package loccur
       :bind
       (:map gpolonkai/pers-map
-       ("C-o" . gpolonkai/toggle-loccur)))
+       ("C-c a" . gpolonkai/toggle-loccur)))
 
 #+END_SRc
   
@@ -974,3 +962,13 @@ show number of matches in the mode line when searching
 
 
 
+
+* highlight indent guides
+#+BEGIN_SRC emacs-lisp
+
+  (use-package highlight-indent-guides
+  :hook
+  (prog-mode . highlight-indent-guides-mode))
+
+#+END_SRC
+  
