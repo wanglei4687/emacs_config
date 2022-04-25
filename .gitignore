@@ -11,6 +11,9 @@ quelpa/
 org/
 myinit.el
 .lsp-session-v1
+history
+projectile-bookmarks.*
+
 # OSX leaves these everywhere on SMB shares
 ._*
 
