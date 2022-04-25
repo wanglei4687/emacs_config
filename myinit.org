@@ -454,6 +454,13 @@ See more, https://www.flycheck.org/en/latest/
   (use-package flycheck-irony
   :ensure t)
 
+;  (use-package flycheck-golangci-lint
+;  :ensure t
+;  :config
+;  (setq flycheck-golangci-lint-deadline "1m")
+;  (setq flycheck-golangci-lint-config "~/.emacs.d/.golangci.yml")
+;  :hook (go-mode . flycheck-golangci-lint-setup))
+
 #+END_SRC  
 
 * Yasnippet
