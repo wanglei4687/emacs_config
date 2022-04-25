@@ -265,7 +265,8 @@ Buffer managerment, see more https://www.emacswiki.org/emacs/IbufferMode
 
 #+END_SRC
 
-* Swiper/Ivy/CounselSwiper gives us a really efficient incremental search with regular expressions 
+* Swiper/Ivy/CounselSwiper
+gives us a really efficient incremental search with regular expressions
 and Ivy / Counsel replace a lot of ido or helms completion functionality
 See more Swiper: https://github.com/abo-abo/swiper
 #+BEGIN_SRC emacs-lisp
@@ -956,19 +957,20 @@ show number of matches in the mode line when searching
        ("C-c a" . gpolonkai/toggle-loccur)))
 
 #+END_SRc
-  
-
-
-
-
-
 
 * highlight indent guides
 #+BEGIN_SRC emacs-lisp
 
-  (use-package highlight-indent-guides
-  :hook
-  (prog-mode . highlight-indent-guides-mode))
+;  (use-package highlight-indent-guides
+;  :hook
+;  (prog-mode . highlight-indent-guides-mode))
+;  :config
+;  (setq highlight-indent-guides-method 'character)
+;  (setq highlight-indent-guides-character ?|)
+;  (setq highlight-indent-guides-auto-odd-face-perc 5)
+;  (setq highlight-indent-guides-auto-even-face-perc 5)
+;  (setq highlight-indent-guides-auto-character-face-perc 10)
+;  (setq highlight-indent-guides-suppress-auto-error t)
 
 #+END_SRC
   
