@@ -486,8 +486,8 @@ See more, https://github.com/joaotavora/yasnippet
 
 #+END_SRC
 
-* languages
-** lsp mode
+* lsp mode
+   
 #+BEGIN_SRC emacs-lisp
 
   (use-package lsp-mode
@@ -501,13 +501,20 @@ See more, https://github.com/joaotavora/yasnippet
   (use-package lsp-ui)
 
 #+END_SRC
-
+* languages
 ** go mode
 #+BEGIN_SRC emacs-lisp
 
   (use-package go-mode
-  :hook (go-mode . lsp))
-
+  :mode "\\.go\\'"
+  :config
+  (defun my/go-mode-setup ()
+    "Basic Go mode setup."
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  (add-hook 'go-mode-hook #'my/go-mode-setup)
+  :hook
+  (go-mode . lsp))
 
 #+END_SRC
 
