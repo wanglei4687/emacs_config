@@ -65,6 +65,17 @@ Add package website to list
 
 #+END_SRC
 
+** set backup folder
+#+BEGIN_SRC emacs-lisp
+
+;; store all backup and autosave files in the tmp dir
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+#+END_SRC
+
 * Interface tweaks
  Modify interface
 #+BEGIN_SRC emacs-lisp
