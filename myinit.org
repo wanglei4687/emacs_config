@@ -7,7 +7,7 @@ Add package website to list
 
 (require 'package)
 (add-to-list 'package-archives
-             '("gnu" . "https://elpa.gnu.org/packages/"))
+             '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
@@ -209,7 +209,8 @@ Document: http://www.dr-qubit.org/undo-tree/undo-tree.txt
   (global-set-key (kbd "C-z") 'undo)
   :config
   (setq undo-tree-auto-save-history t)
-  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
+  (setq undo-tree-history-directory-alist
+	'(("." . ,temporary-file-directory))))
 
 #+END_SRC
 
@@ -1003,7 +1004,6 @@ show number of matches in the mode line when searching
 
 #+END_SRC
   
-
 * conventional-changelog
 #+BEGIN_SRC emacs-lisp
 
