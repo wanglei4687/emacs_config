@@ -95,7 +95,7 @@ Add package website to list
 
 #+END_SRC
 
-* Themes and  Modeline 
+* Themes and Modeline 
 Editor themes, see more https://github.com/hlissner/emacs-doom-themes
 #+BEGIN_SRC emacs-lisp
 
@@ -218,7 +218,8 @@ Document: http://www.dr-qubit.org/undo-tree/undo-tree.txt
   (global-set-key (kbd "C-z") 'undo)
   :config
   (setq undo-tree-auto-save-history t)
-  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
+  (setq undo-tree-history-directory-alist 
+	`(("." . ,temporary-file-directory))))
 
 #+END_SRC
 
