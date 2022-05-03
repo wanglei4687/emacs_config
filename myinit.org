@@ -68,11 +68,19 @@ Add package website to list
 ** set backup folder
 #+BEGIN_SRC emacs-lisp
 
-;; store all backup and autosave files in the tmp dir
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+  ;; store all backup and autosave files in the tmp dir
+  (setq backup-directory-alist
+     `((".*" . ,temporary-file-directory)))
+  (setq auto-save-file-name-transforms
+     `((".*" ,temporary-file-directory t)))
+
+#+END_SRC
+
+** default config for ispell
+#+BEGIN_SRC emacs-lisp
+
+  (setq-default ispell-program-name "aspell")
+  (ispell-change-dictionary "american" t)
 
 #+END_SRC
 
@@ -202,6 +210,7 @@ Visulize the Undo trace, see more https://elpa.gnu.org/packages/undo-tree.html
 Document: http://www.dr-qubit.org/undo-tree/undo-tree.txt
 #+BEGIN_SRC emacs-lisp
 
+
   (use-package undo-tree
   :ensure t
   :init
@@ -209,8 +218,7 @@ Document: http://www.dr-qubit.org/undo-tree/undo-tree.txt
   (global-set-key (kbd "C-z") 'undo)
   :config
   (setq undo-tree-auto-save-history t)
-  (setq undo-tree-history-directory-alist
-	'(("." . ,temporary-file-directory))))
+  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
 
 #+END_SRC
 
