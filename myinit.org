@@ -633,13 +633,39 @@ See more, https://github.com/joaotavora/yasnippet
 
 
 #+END_SRC
-** web mode
+** web development
 #+BEGIN_SRC emacs-lisp
 
+  (use-package web-mode
+  :mode "\\.html?\\'"
+  :custom
+  (web-mode-enable-auto-indentation nil)
+  (web-mode-enable-engine-detection t))
 
-  
+  (use-package emmet-mode
+  :custom
+  (emmet-self-closing-tag-style "")
+  :hook
+  (web-mode . emmet-mode)
+  (css-mode . emmet-mode))
+
+  (use-package js2-mode
+  :pin melpa-stable
+  :mode (("\\.js\\'" . js2-mode)
+         ("\\.jsx\\'" . js2-mode)))
+
+  (use-package typescript-mode
+  :pin melpa-stable
+  :mode (("\\.ts\\'" . typescript-mode)
+         ("\\.tsx\\'" . typescript-mode)))
+
+  (use-package less-css-mode
+  :mode "\\.less\\'")
+
+  (use-package sass-mode
+  :mode "\\.sass\\'")
+
 #+END_SRC
-
 * Magit
 Git plugin
 See more, https://magit.vc/

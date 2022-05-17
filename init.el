@@ -21,7 +21,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(minions treemacs-all-the-icons ag yaml org-bullets use-package monokai-pro-theme doom-themes doom-modeline color-theme-modern))
+   '(typescript-mode minions treemacs-all-the-icons ag yaml org-bullets use-package monokai-pro-theme doom-themes doom-modeline color-theme-modern))
  '(use-package-always-ensure t)
  '(use-package-verbose nil))
 (custom-set-faces
