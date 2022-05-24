@@ -5,33 +5,25 @@
 Add package website to list
 #+BEGIN_SRC emacs-lisp
 
-(require 'package)
-(add-to-list 'package-archives
-             '("gnu" . "https://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("org" . "https://orgmode.org/elpa/") t)
+  (require 'package)
+  (add-to-list 'package-archives
+	       '("gnu" . "https://elpa.gnu.org/packages/") t)
+  (add-to-list 'package-archives
+	       '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+  (add-to-list 'package-archives
+	       '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives
+	       '("org" . "https://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives
+	       '("ublt" . "https://elpa.ubolonton.org/packages/") t)
 
 #+END_SRC
 
 * pre load
-** conifg use-packge and preload bind-key
+** preload bind-key
 #+BEGIN_SRC emacs-lisp
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(require 'use-package)
-
-(customize-set-variable 'use-package-always-ensure t)
-(customize-set-variable 'use-package-verbose nil)
-
 (use-package bind-key)
-
 
 #+END_SRC
 
@@ -95,37 +87,6 @@ Add package website to list
 
 #+END_SRC
 
-* Themes and Modeline 
-Editor themes, see more https://github.com/hlissner/emacs-doom-themes
-#+BEGIN_SRC emacs-lisp
-
-  (use-package color-theme-modern
-  :ensure t)
-  (use-package doom-themes
-  :ensure t)
-  (use-package doom-modeline
-  :ensure t)
-
-  (require 'doom-modeline)
-  (doom-modeline-init)
-
-  (load-theme 'doom-zenburn  t)
-
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-
-  ;; Enable custom neotree (all-the-icons must be installed!)
-  ;; (doom-themes-neotree-config)
-
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-  (doom-themes-treemacs-config)
-
-  ;; corrects (and improves) org-mode's native fontification
-  (doom-themes-org-config)
-
-#+END_SRC
-
 * Org-mode
 Config org-mode, see more https://orgmode.org/
 #+BEGIN_SRC emacs-lisp
@@ -184,16 +145,47 @@ Config org-mode, see more https://orgmode.org/
 
 #+END_SRC
 
+* Themes and Modeline 
+Editor themes, see more https://github.com/hlissner/emacs-doom-themes
+#+BEGIN_SRC emacs-lisp
+
+  (use-package color-theme-modern
+  :ensure t)
+  (use-package doom-themes
+  :ensure t)
+  (use-package doom-modeline
+  :ensure t)
+
+  (require 'doom-modeline)
+  (doom-modeline-init)
+
+  (load-theme 'doom-zenburn  t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+
+  ;; Enable custom neotree (all-the-icons must be installed!)
+  ;; (doom-themes-neotree-config)
+
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+  (doom-themes-treemacs-config)
+
+  ;; corrects (and improves) org-mode's native fontification
+  (doom-themes-org-config)
+
+#+END_SRC
+
 * Treemacs
 A tree layout file explorer for emacs, see more https://github.com/Alexander-Miller/treemacs
 #+BEGIN_SRC emacs-lisp
-  (use-package dired-sidebar
-  :bind ("C-c C-x s" . dired-sidebar-toggle-sidecar))
 
-  (use-package all-the-icons
-  :defer)
+  (ignore-errors (set-frame-font "JuliaMono-12"))
+
+  (use-package all-the-icons)
 
   (use-package all-the-icons-dired
+  :after all-the-icons
   :hook (dired-mode . all-the-icons-dired-mode))
 
   (use-package all-the-icons-ivy-rich
@@ -510,10 +502,10 @@ See more, https://github.com/joaotavora/yasnippet
 
 #+END_SRC
 
-* lsp mode   
+* lsp mode
 #+BEGIN_SRC emacs-lisp
 (setq lsp-log-io nil) ;; Don't log everything = speed
-(setq lsp-keymap-prefix "C-c l")
+(setq lsp-keymap-prefix "C-c j")
 (setq lsp-restart 'auto-restart)
 (setq lsp-ui-sideline-show-diagnostics t)
 (setq lsp-ui-sideline-show-hover t)
