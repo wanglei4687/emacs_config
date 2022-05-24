@@ -1,32 +1,7 @@
 #+STARTUP: overview
 #+PROPERTY: header-args :comments yes :results silent
 
-* package archives
-Add package website to list
-#+BEGIN_SRC emacs-lisp
-
-  (require 'package)
-  (add-to-list 'package-archives
-	       '("gnu" . "https://elpa.gnu.org/packages/") t)
-  (add-to-list 'package-archives
-	       '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-  (add-to-list 'package-archives
-	       '("melpa" . "https://melpa.org/packages/") t)
-  (add-to-list 'package-archives
-	       '("org" . "https://orgmode.org/elpa/") t)
-  (add-to-list 'package-archives
-	       '("ublt" . "https://elpa.ubolonton.org/packages/") t)
-
-#+END_SRC
-
 * pre load
-** preload bind-key
-#+BEGIN_SRC emacs-lisp
-
-(use-package bind-key)
-
-#+END_SRC
-
 ** install and configure Quelpa
 #+BEGIN_SRC emacs-lisp
 
@@ -38,14 +13,82 @@ Add package website to list
 
 #+END_SRC
 
-** set UTF-8 as the default encoding
+** pre config
 #+BEGIN_SRC emacs-lisp
 
-(set-language-environment "UTF-8")
-(set-default-coding-systems 'utf-8)
+  (require 'hl-line)
+  (add-hook 'prog-mode-hook #'hl-line-mode)
+  (add-hook 'text-mode-hook #'hl-line-mode)
+  
+  (use-package bind-key)
+  (setq gc-cons-threshold 100000000)
+  (set-charset-priority 'unicode)
+  (prefer-coding-system 'utf-8-unix)
+  (delete-selection-mode t)
+  (column-number-mode)
+  (savehist-mode)
+
+  (set-language-environment "UTF-8")
+  (set-default-coding-systems 'utf-8)
+  (setq
+   ;; No need to see GNU agitprop.
+   inhibit-startup-screen t
+   ;; Double-spaces after periods is morally wrong.
+   sentence-end-double-space nil
+   ;; Never ding at me, ever.
+   ring-bell-function 'ignore
+   ;; Save existing clipboard text into the kill ring before replacing it.
+   save-interprogram-paste-before-kill t
+   ;; Prompts should go in the minibuffer, not in a GUI.
+   use-dialog-box nil
+   ;; Fix undo in commands affecting the mark.
+   mark-even-if-inactive nil
+   ;; Let C-k delete the whole line.
+   kill-whole-line t
+   ;; search should be case-sensitive by default
+   case-fold-search nil
+   ;; no need to prompt for the read command _every_ time
+   compilation-read-command nil
+   ;; scroll to first error
+   compilation-scroll-output 'first-error
+   ;; accept 'y' or 'n' instead of yes/no
+   ;; the documentation advises against setting this variable
+   ;; the documentation can get bent imo
+   use-short-answers t
+   ;; eke out a little more scrolling performance
+   fast-but-imprecise-scrolling t
+   ;; prefer newer elisp files
+   load-prefer-newer t
+   ;; when I say to quit, I mean quit
+   confirm-kill-processes nil
+   ;; if native-comp is having trouble, there's not very much I can do
+   native-comp-async-report-warnings-errors 'silent
+   ;; unicode ellipses are better
+   truncate-string-ellipsis "…"
+   ;; I want to close these fast, so switch to it so I can just hit 'q'
+   help-window-select t
+   ;; this certainly can't hurt anything
+   delete-by-moving-to-trash t
+   ;; keep the point in the same place while scrolling
+   scroll-preserve-screen-position t
+   ;; more info in completions
+   completions-detailed t
+   ;; highlight error messages more aggressively
+   next-error-message-highlight t
+   ;; don't let the minibuffer muck up my window tiling
+   read-minibuffer-restore-windows t
+   ;; scope save prompts to individual projects
+   save-some-buffers-default-predicate 'save-some-buffers-root
+   ;; don't keep duplicate entries in kill ring
+   kill-do-not-save-duplicates t
+   )
+
+  ;; Never mix tabs and spaces. Never use tabs, period.
+  ;; We need the setq-default here because this becomes
+  ;; a buffer-local variable when set.
+  (setq-default indent-tabs-mode nil)
 
 #+END_SRC
-
 ** Quelpa-use-package
 #+BEGIN_SRC emacs-lisp
 
@@ -76,8 +119,115 @@ Add package website to list
 
 #+END_SRC
 
+** helpful
+#+BEGIN_SRC emacs-lisp
+
+  (use-package s)
+  (use-package dash)
+
+#+END_SRC
+
+* tree-sitter
+#+BEGIN_SRC emacs-lisp
+
+  (use-package tree-sitter-hl-mode
+  :hook ((ruby-mode . tree-sitter-hl-mode)
+         (js-mode . tree-sitter-hl-mode)
+         (rust-mode . tree-sitter-hl-mode)
+         (sh-mode . tree-sitter-hl-mode)
+         (python-mode . tree-sitter-hl-mode)
+         (c-mode . tree-sitter-hl-mode)
+         (typescript-mode . tree-sitter-hl-mode)
+         (go-mode . tree-sitter-hl-mode)))
+
+#+END_SRC
+* prodigy
+#+BEGIN_SRC emacs-lisp
+
+  (use-package prodigy
+    :bind (("C-c 8" . #'prodigy)
+           :map prodigy-view-mode-map
+           ("$" . #'end-of-buffer))
+    :custom (prodigy-view-truncate-by-default t)
+    :config
+  ;;  (load "~/.emacs.d/services.el" 'noerror))
+    (prodigy-define-tag
+    :name 'pulumi
+    :ready-message "Pulumi!!!")
+    (prodigy-define-tag
+     :name 'operator
+     :ready-message "Matrixone Operator!!!")
+
+    (prodigy-define-service
+     :name "pulumi up"
+     :command "pulumi"
+     :args '("up", "--yes")
+     :cwd "~/Documents/matrixone-operator/"
+     :tags '(pulumi))
+  )
+
+#+END_SRC
+
+* completion and input
+#+BEGIN_SRC emacs-lisp
+
+  (use-package vertico
+    :config
+    (vertico-mode)
+    (vertico-mouse-mode)
+    :custom
+    (vertico-count 22)
+    (vertico-cycle t)
+    :bind (:map vertico-map
+                ("C-v e" . #'vertico-quick-exit)
+                ("C-v c" . #'vertico-quick-insert)
+                ("C-v w" . #'exit-minibuffer)
+                ("C-v i" . #'vertico-insert)
+                ("C-v v" . #'vertico)
+                ("C-v d" . #'vertico-directory-delete-char)))
+
+  (use-package consult
+    :config
+    (defun pt/yank-pop ()
+      "As pt/yank, but calling consult-yank-pop."
+      (interactive)
+      (let ((point-before (point)))
+        (consult-yank-pop)
+        (indent-region point-before (point))))
+
+    :bind (("C-c i"     . #'consult-imenu)
+           ("C-c b"     . #'consult-buffer)
+           ("C-x b"     . #'consult-buffer)
+           ("C-c r"     . #'consult-recent-file)
+           ("C-c y"     . #'pt/yank-pop)
+           ("C-c R"     . #'consult-bookmark)
+           ("C-c `"     . #'consult-flymake)
+           ("C-c h"     . #'consult-ripgrep)
+           ("C-x C-f"   . #'find-file)
+           ("C-c C-h a" . #'consult-apropos)
+           )
+    :custom
+    (completion-in-region-function #'consult-completion-in-region)
+    (xref-show-xrefs-function #'consult-xref)
+    (xref-show-definitions-function #'consult-xref)
+    (consult-project-root-function #'deadgrep--project-root) ;; ensure ripgrep works
+    )
+
+  (use-package marginalia
+    :config (marginalia-mode))
+
+  (use-package orderless
+    :custom (completion-styles '(orderless basic)))
+
+  (use-package ctrlf
+    :config (ctrlf-mode))
+
+  (use-package prescient
+    :config (prescient-persist-mode))
+
+#+END_SRC
 * Interface tweaks
- Modify interface
+Modify interface
 #+BEGIN_SRC emacs-lisp
 
   (setq inhibit-startup-message t)
@@ -221,13 +371,12 @@ Fow switching window easily
 
   (use-package ace-window
     :ensure t
-    :init 
-    (progn 
-      (setq aw-scope 'frame)
-      (setq aw-background nil)
-      (global-set-key (kbd "M-o") 'ace-window)
-      (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-    ))
+    :config 
+     (setq aw-scope 'frame)
+     (setq aw-background nil)
+     (global-set-key (kbd "C-c a") 'ace-window)
+     (ace-window-display-mode)
+     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
   (use-package ace-jump-mode
   :bind ("C-." . ace-jump-mode))
@@ -549,7 +698,8 @@ See more, https://github.com/joaotavora/yasnippet
   ("C-c t" . rust-test)
   ("C-c b" . cargo-process-build)
   :config
-  (setq rust-format-on-save t))
+  (setq rust-format-on-save t)
+  (setq lsp-rust-server 'rust-analyzer))
 
   (use-package cargo
   :hook (rust-mode . cargo-minor-mode)
@@ -577,12 +727,24 @@ See more, https://github.com/joaotavora/yasnippet
 
 #+END_SRC
 
-** eldoc mode
+** eldoc and xref
 #+BEGIN_SRC emacs-lisp
 
-(use-package eldoc
-  :diminish eldoc-mode)
+(use-package xref
+  :pin gnu
+  :bind (("s-r" . #'xref-find-references)
+         ("C-<down-mouse-1>" . #'xref-find-definitions)
+         ("C-S-<down-mouse-1>" . #'xref-find-references)
+         ("C-<down-mouse-2>" . #'xref-go-back)
+         ("s-[" . #'xref-go-back)
+         ("s-]" . #'xref-go-forward)))
 
+(use-package eldoc
+  :pin gnu
+  :diminish
+  :bind ("s-d" . #'eldoc)
+  :custom (eldoc-echo-area-prefer-doc-buffer t))
+  
 #+END_SRC
 ** yaml mode
 #+BEGIN_SRC emacs-lisp
@@ -618,6 +780,9 @@ See more, https://github.com/joaotavora/yasnippet
 
 ** fish shell
 #+BEGIN_SRC emacs-lisp
+  
+  (use-package vterm
+    :ensure t)
 
   (use-package fish-mode
   :hook
@@ -664,7 +829,12 @@ See more, https://magit.vc/
 #+BEGIN_SRC emacs-lisp
 
   (use-package magit
-  :ensure t
+  :diminish magit-autorevert-mode
+  :diminish auto-revert-mode
+  :config
+  (defun pt/commit-hook () (set-fill-column 80))
+  (add-hook 'git-commit-setup-hook #'pt/commit-hook)
+  (add-to-list 'magit-no-confirm 'stage-all-changes)
   :bind (
     ("C-c x c" . magit-commit)
     ("C-c x p" . magit-push)
@@ -679,15 +849,27 @@ See more, https://magit.vc/
     ("C-c x u" . magit-pull)
   ))
 
+  (use-package forge
+  :after magit)
+
+  ;; hack to eliminate weirdness
+  (unless (boundp 'bug-reference-auto-setup-functions)
+    (defvar bug-reference-auto-setup-functions '()))
+
+
+  (use-package libgit :after magit)
+  (use-package magit-libgit
+  :after (magit libgit))
+
 
   (use-package git-messenger
-  :bind ("C-x G" . git-messenger:popup-message)
+  :bind ("C-c x m" . git-messenger:popup-message)
   :config
   (setq git-messenger:show-detail t
         git-messenger:use-magit-popup t))
 
   (use-package git-timemachine
-  :bind ("C-c t" . git-timemachine))
+  :bind ("C-c x t" . git-timemachine))
 
 
 #+END_SRC
@@ -731,30 +913,32 @@ helm mode
 See more, https://github.com/emacs-helm/helm
 #+BEGIN_SRC emacs-lisp
 
-(use-package ag)
+  (use-package ag)
 
-(use-package helm-ag
-  :after ag)
+  (use-package helm-ag
+    :after ag)
 
-(use-package helm-projectile
-  :after helm
+  (use-package helm-projectile
+    :after helm
+    :config
+    (helm-projectile-on))
+
+  (use-package diminish
   :config
-  (helm-projectile-on))
+  (diminish 'visual-line-mode))
 
-(use-package diminish)
-
-(use-package helm
-  :diminish helm-mode
-  :init
-  (require 'helm-config)
-  :bind
-  ("C-c f" . helm-projectile-find-file-dwim)
-  ("M-x" . helm-M-x)
-  ("C-x r b" . helm-filtered-bookmarks)
-  ("C-x C-f" . helm-find-files)
-  :init
-  (helm-mode 1)
-  (customize-set-variable 'helm-ff-lynx-style-map t))
+  (use-package helm
+    :diminish helm-mode
+    :init
+    (require 'helm-config)
+    :bind
+    ("C-c f" . helm-projectile-find-file-dwim)
+    ("M-x" . helm-M-x)
+    ("C-x r b" . helm-filtered-bookmarks)
+    ("C-x C-f" . helm-find-files)
+    :init
+    (helm-mode 1)
+    (customize-set-variable 'helm-ff-lynx-style-map t))
 
 #+END_SRC
 
@@ -845,15 +1029,6 @@ see more, https://github.com/editorconfig/editorconfig-emacs
 (use-package auto-highlight-symbol
   :config
   (global-auto-highlight-symbol-mode t))
-
-#+END_SRC
-
-* highlight the current line
-#+BEGIN_SRC emacs-lisp
-
-  (use-package hl-line
-  :config
-  (global-hl-line-mode t))
 
 #+END_SRC
 
@@ -1062,3 +1237,4 @@ show number of matches in the mode line when searching
 
 
 #+END_SRC
+
