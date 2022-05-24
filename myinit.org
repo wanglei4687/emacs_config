@@ -782,7 +782,7 @@ See more, https://github.com/joaotavora/yasnippet
 #+BEGIN_SRC emacs-lisp
   
   (use-package vterm
-    :ensure t)
+  :defer)
 
   (use-package fish-mode
   :hook
