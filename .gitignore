@@ -15,6 +15,7 @@ myinit.el
 history
 projectile-bookmarks.*
 var/
+*.sqlite
 
 # OSX leaves these everywhere on SMB shares
 ._*
