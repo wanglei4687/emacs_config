@@ -847,6 +847,7 @@ See more, https://magit.vc/
     ("C-c x s" . magit-stash)
     ("C-c x g" . magit-status)
     ("C-c x u" . magit-pull)
+    ("C-c x y" . magit-branch-checkout)
   ))
 
   (use-package forge
