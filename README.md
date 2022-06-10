@@ -6,4 +6,4 @@
 
 ```shell
 git clone https://github.com/wanglei4687/emacs_config ~/.emacs.d
-``
+```
