@@ -5,5 +5,5 @@
 ## How to use it
 
 ```shell
-git clone https://github.com/wanglei4687/emacs_config ~/.emacs.d
+git clone git@github.com:wanglei4687/emacs_config.git ~/.emacs.d
 ```
