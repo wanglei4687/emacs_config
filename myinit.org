@@ -130,6 +130,14 @@
 
 #+END_SRC
 
+** hl-line
+#+BEGIN_SRC emacs-lisp
+
+;;  (use-package hl-line
+;;    :custom-face
+;;    (hl-line ((t (:background "#D9F4E8")))))
+
+#+END_SRC
 * tree-sitter
 #+BEGIN_SRC emacs-lisp
   (use-package tree-sitter
@@ -887,7 +895,8 @@ See more, https://magit.vc/
 
   (use-package forge
   :ensure t
-  :after magit)
+  :after magit
+  :bind (()))
 
   ;; hack to eliminate weirdness
   (unless (boundp 'bug-reference-auto-setup-functions)
