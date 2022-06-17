@@ -897,9 +897,9 @@ See more, https://magit.vc/
   :ensure t
   :after magit
   :bind (
-     ("C-c t p" . forge-pull)
-     ("C-c t i" . forge-list-issues)
-     ("C-c t r" . forge-list-pullreqs)
+     ("C-c v p" . forge-pull)
+     ("C-c v i" . forge-list-issues)
+     ("C-c v r" . forge-list-pullreqs)
    ))
 
   ;; hack to eliminate weirdness
