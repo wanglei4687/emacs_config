@@ -896,7 +896,7 @@ See more, https://magit.vc/
   (use-package forge
   :ensure t
   :after magit
-  :bind (()))
+  :bind (("C-c t p". forge-pull)))
 
   ;; hack to eliminate weirdness
   (unless (boundp 'bug-reference-auto-setup-functions)
