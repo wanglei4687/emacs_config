@@ -821,9 +821,10 @@ See more, https://github.com/joaotavora/yasnippet
 
 ** fish shell
 #+BEGIN_SRC emacs-lisp
-  
+
   (use-package vterm
-  :defer)
+  :defer
+  :ensure t)
 
   (use-package fish-mode
   :ensure t
