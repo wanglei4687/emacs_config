@@ -746,6 +746,7 @@ See more, https://github.com/joaotavora/yasnippet
 
   (use-package racer
   :after rust-mode
+  ensure t
   :diminish racer-mode
   :hook (rust-mode . racer-mode)
   :bind
