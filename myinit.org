@@ -826,7 +826,8 @@ See more, https://github.com/joaotavora/yasnippet
 
   (use-package vterm
   :defer
-  :ensure t)
+  :ensure t
+  :bind ("C-x g" . vterm))
 
   (use-package fish-mode
   :ensure t
@@ -840,11 +841,13 @@ See more, https://github.com/joaotavora/yasnippet
 
   (use-package web-mode
   :mode "\\.html?\\'"
+  :ensure t
   :custom
   (web-mode-enable-auto-indentation nil)
   (web-mode-enable-engine-detection t))
 
   (use-package emmet-mode
+  :ensure t
   :custom
   (emmet-self-closing-tag-style "")
   :hook
@@ -852,19 +855,23 @@ See more, https://github.com/joaotavora/yasnippet
   (css-mode . emmet-mode))
 
   (use-package js2-mode
+  :ensure t
   :pin melpa-stable
   :mode (("\\.js\\'" . js2-mode)
          ("\\.jsx\\'" . js2-mode)))
 
   (use-package typescript-mode
+  :ensure t
   :pin melpa-stable
   :mode (("\\.ts\\'" . typescript-mode)
          ("\\.tsx\\'" . typescript-mode)))
 
   (use-package less-css-mode
+  :ensure t
   :mode "\\.less\\'")
 
   (use-package sass-mode
+  :ensure t
   :mode "\\.sass\\'")
 
 #+END_SRC
