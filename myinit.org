@@ -912,6 +912,7 @@ See more, https://magit.vc/
      ("C-c v q" . forge-edit-topic-milestone)
      ("C-c v f" . forge-edit-topic-assignees)
      ("C-c v s" . forge-edit-topic-state)
+     ("C-c v g" . forge-merge)
    ))
 
   ;; Hack to eliminate weirdness
