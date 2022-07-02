@@ -5,11 +5,11 @@
 ** install and configure Quelpa
 #+BEGIN_SRC emacs-lisp
 
-(unless (package-installed-p 'quelpa)
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-    (eval-buffer)
-    (quelpa-self-upgrade)))
+;(unless (package-installed-p 'quelpa)
+;  (with-temp-buffer
+;    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+;    (eval-buffer)
+;    (quelpa-self-upgrade)))
 
 #+END_SRC
 
@@ -92,11 +92,11 @@
 ** Quelpa-use-package
 #+BEGIN_SRC emacs-lisp
 
-(quelpa
- '(quelpa-use-package
-   :fetcher git
-   :url "git@github.com:quelpa/quelpa-use-package.git"))
-(require 'quelpa-use-package)
+;(quelpa
+; '(quelpa-use-package
+;   :fetcher git
+;   :url "git@github.com:quelpa/quelpa-use-package.git"))
+;(require 'quelpa-use-package)
 
 #+END_SRC
 
@@ -313,34 +313,25 @@ Config org-mode, see more https://orgmode.org/
 #+END_SRC
 
 * Themes and Modeline 
-Editor themes, see more https://github.com/hlissner/emacs-doom-themes
+see more https://github.com/hlissner/emacs-doom-themes
+doomemacs: https://github.com/doomemacs/themes
 #+BEGIN_SRC emacs-lisp
 
   (use-package color-theme-modern
   :ensure t)
+  
   (use-package doom-themes
-  :ensure t)
-  (use-package doom-modeline
-  :ensure t)
-
-  (require 'doom-modeline)
-  (doom-modeline-init)
-
-  (load-theme 'doom-zenburn  t)
-
-  ;; Enable flashing mode-line on errors
-;;  (doom-themes-visual-bell-config)
-
-  ;; Enable custom neotree (all-the-icons must be installed!)
-  ;; (doom-themes-neotree-config)
-
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+  :ensure t
+  :config
+  (load-theme 'doom-zenburn t)
   (doom-themes-treemacs-config)
-
-  ;; corrects (and improves) org-mode's native fontification
   (doom-themes-org-config)
+  (setq doom-themes-treemacs-theme "doom-colors"))
 
+  (use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
+  
 #+END_SRC
 
 * Treemacs
@@ -910,6 +901,8 @@ See more, https://magit.vc/
      ("C-c v p" . forge-pull)
      ("C-c v i" . forge-list-issues)
      ("C-c v r" . forge-list-pullreqs)
+     ("C-c v a" . forge-create-pullreq-from-issue)
+     ("C-c v u" . forge-create-issue)
    ))
 
   ;; hack to eliminate weirdness
