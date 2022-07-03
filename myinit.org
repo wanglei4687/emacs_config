@@ -913,6 +913,7 @@ See more, https://magit.vc/
      ("C-c v f" . forge-edit-topic-assignees)
      ("C-c v s" . forge-edit-topic-state)
      ("C-c v g" . forge-merge)
+     ("C-c v y" . forge-create-pullreq)
    ))
 
   ;; Hack to eliminate weirdness
