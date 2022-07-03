@@ -866,7 +866,7 @@ See more, https://github.com/joaotavora/yasnippet
   :mode "\\.sass\\'")
 
 #+END_SRC
-* Magitxo
+* Magit
 Git plugin
 See more, https://magit.vc/
 #+BEGIN_SRC emacs-lisp
