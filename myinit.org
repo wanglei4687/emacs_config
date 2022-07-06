@@ -730,7 +730,15 @@ See more, https://github.com/joaotavora/yasnippet
   :defer
   :ensure t
   :hook (rust-mode . cargo-minor-mode)
-  :diminish cargo-minor-mode)
+  :diminish cargo-minor-mode
+  :bind (
+    ("C-x j r" . cargo-process-run)
+    ("C-x j b" . cargo-process-build)
+    ("C-x j a" . cargo-process-add)
+    ("C-x j t" . cargo-process-test)
+    ("C-x j c" . cargo-process-clippy)
+    ("C-x j l" . cargo-process-clean)
+    ()))
 
   (use-package flycheck-rust
   :ensure t
@@ -866,7 +874,7 @@ See more, https://github.com/joaotavora/yasnippet
   :mode "\\.sass\\'")
 
 #+END_SRC
-* Magit
+* Magitx
 Git plugin
 See more, https://magit.vc/
 #+BEGIN_SRC emacs-lisp
