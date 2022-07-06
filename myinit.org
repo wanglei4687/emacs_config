@@ -874,7 +874,7 @@ See more, https://github.com/joaotavora/yasnippet
   :mode "\\.sass\\'")
 
 #+END_SRC
-* Magitx
+* Magit
 Git plugin
 See more, https://magit.vc/
 #+BEGIN_SRC emacs-lisp
@@ -900,6 +900,7 @@ See more, https://magit.vc/
     ("C-c x g" . magit-status)
     ("C-c x u" . magit-pull)
     ("C-c x y" . magit-branch-checkout)
+    ("C-c x a" . magit-branch-and-checkout)
   ))
 
   (use-package forge
