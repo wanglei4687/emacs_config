@@ -15,11 +15,15 @@
 
 ** pre config
 #+BEGIN_SRC emacs-lisp
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (set-face-attribute 'region nil :background "#fffacd")
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
   (require 'hl-line)
   (add-hook 'prog-mode-hook #'hl-line-mode)
   (add-hook 'text-mode-hook #'hl-line-mode)
-  
+
   (use-package bind-key)
   (setq gc-cons-threshold 100000000)
   (set-charset-priority 'unicode)
@@ -126,6 +130,9 @@
   :ensure t)
 
   (use-package dash
+  :ensure t)
+
+  (use-package shut-up
   :ensure t)
 
 #+END_SRC
