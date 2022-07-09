@@ -204,22 +204,243 @@ doomemacs: https://github.com/doomemacs/themes
   (setq dired-sidebar-use-custom-font t))
 #+END_SRC
 
+** magit
+see more, https://magit.vc/
+#+BEGIN_SRC emacs-lisp
+ 
+  (use-package magit
+  :ensure t
+  :diminish magit-autorevert-mode
+  :diminish auto-revert-mode
+  :config
+  (defun pt/commit-hook () (set-fill-column 80))
+  (add-hook 'git-commit-setup-hook #'pt/commit-hook)
+  (add-to-list 'magit-no-confirm 'stage-all-changes)
+  :bind (
+    ("C-c x c" . magit-commit)
+    ("C-c x p" . magit-push)
+    ("C-c x l" . magit-log)
+    ("C-c x n" . magit-clone)
+    ("C-c x b" . magit-branch-create)
+    ("C-c x d" . magit-branch-delete)
+    ("C-c x r" . magit-branch-reset)
+    ("C-c x o" . magit-checkout)
+    ("C-c x s" . magit-stash)
+    ("C-c x g" . magit-status)
+    ("C-c x u" . magit-pull)
+    ("C-c x y" . magit-branch-checkout)
+    ("C-c x a" . magit-branch-and-checkout)
+  ))
+
+  (use-package forge
+  :ensure t
+  :after magit
+  :bind (
+     ("C-c v p" . forge-pull)
+     ("C-c v i" . forge-list-issues)
+     ("C-c v r" . forge-list-pullreqs)
+     ("C-c v a" . forge-create-pullreq-from-issue)
+     ("C-c v u" . forge-create-issue)
+     ("C-c v d" . forge-add-repository)
+     ("C-c v l" . forge-list-topics)
+     ("C-c v n" . forge-forge-edit-topic-note)
+     ("C-c v m" . forge-edit-mark)
+     ("C-c v t" . forge-edit-topic-title)
+     ("C-c v o" . forge-edit-topic-review-requests)
+     ("C-c v q" . forge-edit-topic-milestone)
+     ("C-c v f" . forge-edit-topic-assignees)
+     ("C-c v s" . forge-edit-topic-state)
+     ("C-c v g" . forge-merge)
+     ("C-c v y" . forge-create-pullreq)
+   ))
+
+  ;; Hack to eliminate weirdness
+  (unless (boundp 'bug-reference-auto-setup-functions)
+    (defvar bug-reference-auto-setup-functions '()))
+
+
+  (use-package libgit 
+  :ensure t
+  :after magit)
+  (use-package magit-libgit
+  :ensure t
+  :after (magit libgit))
+
+
+  (use-package git-messenger
+  :ensure t
+  :bind ("C-c x m" . git-messenger:popup-message)
+  :config
+  (setq git-messenger:show-detail t
+        git-messenger:use-magit-popup t))
+
+  (use-package git-timemachine
+  :ensure t
+  :bind ("C-c x t" . git-timemachine)) 
+#+END_SRC
+** treemacs
+#+BEGIN_SRC emacs-lisp
+
+  (use-package treemacs
+  :ensure t
+  :bind (
+  ("C-c C-x t" . treemacs)
+  ("C-c C-x e" . treemacs-edit-workspaces)
+  ("C-c C-x d" . treemacs-decrease-width)
+  ("C-c C-x i" . treemacs-increase-width)
+  ("C-c C-x w" . treemacs-switch-workspace)))
+
+  (use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+  (use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
+
+  (use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
+
+  (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+  :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+  :ensure t
+  :config (treemacs-set-scope-type 'Perspectives))
+
+  (use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
+  :after (treemacs)
+  :ensure t
+  :config (treemacs-set-scope-type 'Tabs))
+
+  (use-package all-the-icons
+  :ensure t)
+
+  (use-package all-the-icons-dired
+  :ensure t
+  :after all-the-icons
+  :hook (dired-mode . all-the-icons-dired-mode))
+#+END_SRC
+
 * programming
 programming config
+** lsp
+#+BEGIN_SRC emacs-lisp
+
+  (setq lsp-log-io nil) ;; Don't log everything = speed
+  (setq lsp-keymap-prefix "C-c j")
+  (setq lsp-restart 'auto-restart)
+  (setq lsp-ui-sideline-show-diagnostics t)
+  (setq lsp-ui-sideline-show-hover t)
+  (setq lsp-ui-sideline-show-code-actions t)
+
+  (use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :diminish lsp-mode
+  :bind
+  ("M-." . 'lsp-find-definition)
+  ("M-t" . 'lsp-find-type-definition)
+  ("M-?" . 'lsp-find-references))
+
+  (use-package lsp-ui
+  :ensure t)
+#+END_SRC
+
 ** tree sitter
 #+BEGIN_SRC emacs-lisp
+  
   (use-package tree-sitter
   :ensure t
-  :defer
   :hook (
     (rust-mode . tree-sitter-mode)
+    (toml-mode . tree-sitter-mode)
+    (markdown-mode . tree-sitter-mode)
     (go-mode . tree-sitter-mode)))
 
   (use-package tree-sitter-langs
-  :ensure t
-  :defer)
+  :defer
+  :ensure t)
 #+END_SRC
 
+** rust
+#+BEGIN_SRC emacs-lisp
+
+  (use-package rust-mode
+  :defer
+  :ensure t
+  :hook (rust-mode . lsp)
+  :bind
+  ("C-c g" . rust-run)
+  ("C-c t" . rust-test)
+  ("C-c b" . cargo-process-build)
+  :config
+  (setq rust-format-on-save t)
+  (setq lsp-rust-server 'rust-analyzer))
+
+  (use-package cargo
+  :defer
+  :ensure t
+  :hook (rust-mode . cargo-minor-mode)
+  :diminish cargo-minor-mode
+  :bind (
+    ("C-x j r" . cargo-process-run)
+    ("C-x j b" . cargo-process-build)
+    ("C-x j a" . cargo-process-add)
+    ("C-x j t" . cargo-process-test)
+    ("C-x j c" . cargo-process-clippy)
+    ("C-x j l" . cargo-process-clean)
+    ()))
+
+  (use-package flycheck-rust
+  :defer
+  :ensure t
+  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+  (use-package racer
+  :after rust-mode
+  :ensure t
+  :diminish racer-mode
+  :hook (rust-mode . racer-mode)
+  :bind
+  ("M-j" . racer-find-definition)
+  ;; (:map racer-mode-map ("M-." . #'xref-find-definitions))
+  (:map racer-mode-map ("M-." . nil)))
+#+END_SRC
+
+** toml
+#+BEGIN_SRC emacs-lisp
+  
+  (use-package toml-mode
+  :defer
+  :ensure t)
+#+END_SRC
+
+** markdown
+#+BEGIN_SRC emacs-lisp
+
+  (use-package markdown-mode
+  :defer
+  :ensure t
+  :mode (("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode)))
+#+END_SRC
+
+** go
+#+BEGIN_SRC emacs-lisp
+
+  (use-package go-mode
+  :defer
+  :ensure t
+  :mode "\\.go\\'"
+  :config
+  (defun my/go-mode-setup ()
+    "Basic Go mode setup."
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  (add-hook 'go-mode-hook #'my/go-mode-setup)
+  :hook
+  (go-mode . lsp))
+#+END_SRC
 * common
 ** org mode
 see more https://orgmode.org/
@@ -277,3 +498,11 @@ see more https://orgmode.org/
 
 #+END_SRC 
 
+** fancy narrow
+#+BEGIN_SRC emacs-lisp
+  (use-package fancy-narrow
+  :defer
+  :ensure t
+  :config
+  (fancy-narrow-mode 1))
+#+END_SRC
