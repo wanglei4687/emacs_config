@@ -1,3 +1,279 @@
 #+STARTUP: overview
 #+PROPERTY: header-args :comments yes :results silent
 
+* pre config
+** quelpa
+#+BEGIN_SRC emacs-lisp
+;  (unless (package-installed-p 'quelpa)
+;  (with-temp-buffer
+;    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+;    (eval-buffer)
+;    (quelpa-self-upgrade)))
+
+  ;; quelpa: use-package
+;  (quelpa
+;  '(quelpa-use-package
+;  :fetcher git
+;  :url "git@github.com:quelpa/quelpa-use-package.git"))
+
+;  (require 'quelpa-use-package)
+#+END_SRC
+
+** editor config
+#+BEGIN_SRC emacs-lisp
+  ;; cursor
+  (setq-default cursor-type 'bar)
+  (set-cursor-color "#63D490")
+  (blink-cursor-mode 1)  
+  
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+;;  (set-face-attribute 'region nil :background "#fffacd")
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+  (require 'hl-line)
+  (add-hook 'prog-mode-hook #'hl-line-mode)
+  (add-hook 'text-mode-hook #'hl-line-mode)
+
+  (use-package bind-key)
+  (setq gc-cons-threshold 100000000)
+  (set-charset-priority 'unicode)
+  (prefer-coding-system 'utf-8-unix)
+  (delete-selection-mode t)
+  (column-number-mode)
+  (savehist-mode)
+
+  (setq-default ispell-program-name "aspell")
+  (ispell-change-dictionary "american" t)  
+
+  (set-language-environment "UTF-8")
+  (set-default-coding-systems 'utf-8)
+  (setq
+    ;; No need to see GNU agitprop.
+    inhibit-startup-screen t
+    ;; Double-spaces after periods is morally wrong.
+    sentence-end-double-space nil
+    ;; Never ding at me, ever.
+    ring-bell-function 'ignore
+    ;; Save existing clipboard text into the kill ring before replacing it.
+    save-interprogram-paste-before-kill t
+    ;; Prompts should go in the minibuffer, not in a GUI.
+    use-dialog-box nil
+    ;; Fix undo in commands affecting the mark.
+    mark-even-if-inactive nil
+    ;; Let C-k delete the whole line.
+    kill-whole-line t
+    ;; search should be case-sensitive by default
+    case-fold-search nil
+    ;; no need to prompt for the read command _every_ time
+    compilation-read-command nil
+    ;; scroll to first error
+    compilation-scroll-output 'first-error
+    ;; accept 'y' or 'n' instead of yes/no
+    ;; the documentation advises against setting this variable
+    ;; the documentation can get bent imo
+    use-short-answers t
+    ;; eke out a little more scrolling performance
+    fast-but-imprecise-scrolling t
+    ;; prefer newer elisp files
+    load-prefer-newer t
+    ;; when I say to quit, I mean quit
+    confirm-kill-processes nil
+    ;; if native-comp is having trouble, there's not very much I can do
+    native-comp-async-report-warnings-errors 'silent
+    ;; unicode ellipses are better
+    truncate-string-ellipsis "…"
+    ;; I want to close these fast, so switch to it so I can just hit 'q'
+    help-window-select t
+    ;; this certainly can't hurt anything
+    delete-by-moving-to-trash t
+    ;; keep the point in the same place while scrolling
+    scroll-preserve-screen-position t
+    ;; more info in completions
+    completions-detailed t
+    ;; highlight error messages more aggressively
+    next-error-message-highlight t
+    ;; don't let the minibuffer muck up my window tiling
+    read-minibuffer-restore-windows t
+    ;; scope save prompts to individual projects
+    save-some-buffers-default-predicate 'save-some-buffers-root
+    ;; don't keep duplicate entries in kill ring
+    kill-do-not-save-duplicates t
+  )
+
+  ;; Never mix tabs and spaces. Never use tabs, period.
+  ;; We need the setq-default here because this becomes
+  ;; a buffer-local variable when set.
+  (setq-default indent-tabs-mode nil)
+#+END_SRC 
+** backup config
+#+BEGIN_SRC emacs-lisp
+  
+;; store all backup and autosave files in the tmp dir
+  (setq backup-directory-alist
+    `((".*" . ,temporary-file-directory)))
+  (setq auto-save-file-name-transforms
+    `((".*" ,temporary-file-directory t)))
+
+#+END_SRC
+** helpful
+#+BEGIN_SRC emacs-lisp
+
+  (use-package s
+  :ensure t)
+
+  (use-package dash
+  :ensure t)
+
+  (use-package shut-up
+  :ensure t)
+  
+#+END_SRC 
+
+* theme and modeline
+see more https://github.com/hlissner/emacs-doom-themes
+doomemacs: https://github.com/doomemacs/themes
+#+BEGIN_SRC emacs-lisp
+  
+;;  (use-package color-theme-modern
+;;  :ensure t)
+
+  (use-package doom-themes
+  :ensure t
+  :config
+  (load-theme 'doom-zenburn t)
+  (doom-themes-treemacs-config)
+  (doom-themes-org-config)
+  (setq doom-themes-treemacs-theme "doom-colors"))
+
+  (use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
+
+#+END_SRC
+
+* editor
+** undo
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+  :ensure t
+  :init
+  (global-undo-tree-mode 1)
+  (global-set-key (kbd "C-z") 'undo)
+  :config
+  (setq undo-tree-auto-save-history t)
+  (setq undo-tree-history-directory-alist 
+    `(("." . ,temporary-file-directory))))
+#+END_SRC
+
+** helm
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+  :ensure t
+  :diminish helm-mode
+  :config
+  (require 'helm-config)
+  :bind
+  ("C-c f" . helm-projectile-find-file-dwim)
+  ("M-x" . helm-M-x)
+  ("C-x r b" . helm-filtered-bookmarks)
+  ("C-x C-f" . helm-find-files)
+  :init
+  (helm-mode 1)
+  (customize-set-variable 'helm-ff-lynx-style-map t))
+#+END_SRC
+
+** dired-sidebar
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-sidebar
+  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-theme 'vscode)
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t))
+#+END_SRC
+
+* programming
+programming config
+** tree sitter
+#+BEGIN_SRC emacs-lisp
+  (use-package tree-sitter
+  :ensure t
+  :defer
+  :hook (
+    (rust-mode . tree-sitter-mode)
+    (go-mode . tree-sitter-mode)))
+
+  (use-package tree-sitter-langs
+  :ensure t
+  :defer)
+#+END_SRC
+
+* common
+** org mode
+see more https://orgmode.org/
+#+BEGIN_SRC emacs-lisp
+  
+  (use-package org
+  :ensure t
+  :pin org)
+
+  ;; this config for linux
+  ;; (setenv "BROWSER" "chromium-browser")
+  (use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+  ;; this config for linux
+  ;; (setq org-file-apps (append '(
+  ;; ("\\.pdf\\'" . "evince %s")
+  ;; ("\\.x?html?\\'" . "/usr/bin/chromium-browser %s")
+  ;; ) org-file-apps ))`
+
+
+  (setq org-agenda-files (list "~/Dropbox/Org/schedule.org"
+                                 "~/.emacs.d/org/course.org"
+                                 "~/.emacs.d/org/exercise.org"
+                                 "~/.emacs.d/org/gtd.org"
+                                 "~/.emacs.d/org/social.org"
+                                 "~/.emacs.d/org/project.org"))
+
+  ;; Multiple keyword sets in one file
+  (setq org-todo-keywords
+    '((sequence "TODO" "IN-PROGRESS" "WAIT" "|" "DONE")
+      (sequencee "REPORT" "BUG" "KNOWNCAUSE" "|" "FIXED")
+      (sequence "|" "CANCELED")))
+
+  (setq org-todo-keyword-faces 
+    '(("TODO" . (:foreground "orange" :weight bold)) 
+      ("REPORT" . (:foreground "orange" :weight bold))
+      ("IN-PROGRESS" . "cyan")
+      ("BUG" . "cyan")
+      ("KNOWNCAUSE" . "cyan")
+      ("DONE" . "green")
+      ("FIXED" . "green")
+      ("CANCELED" . (:foreground "blue" :weight bold))))
+
+  (setq org-tag-alist '((:startgroup . nil)
+                          ("@work" . ?w)
+                          ("@home" . ?h)
+                          ("@course" . ?c)
+                          ("@social" . ?s)
+                          (:endgroup . nil)
+                          ("laptop" . ?l)
+                          ("pc" . ?p)))
+
+#+END_SRC 
+
