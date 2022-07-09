@@ -2,32 +2,12 @@
 #+PROPERTY: header-args :comments yes :results silent
 
 * pre config
-** project
-#+BEGIN_SRC emacs-lisp
-  
-  (projectile-global-mode)
-  (setq projectile-completion-system 'helm)
-#+END_SRC
-
-** quelpa
-#+BEGIN_SRC emacs-lisp
-;  (unless (package-installed-p 'quelpa)
-;  (with-temp-buffer
-;    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-;    (eval-buffer)
-;    (quelpa-self-upgrade)))
-
-  ;; quelpa: use-package
-;  (quelpa
-;  '(quelpa-use-package
-;  :fetcher git
-;  :url "git@github.com:quelpa/quelpa-use-package.git"))
-
-;  (require 'quelpa-use-package)
-#+END_SRC
-
 ** editor config
 #+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-messsage t)
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  
   ;; cursor
   (setq-default cursor-type 'bar)
   (set-cursor-color "#63D490")
@@ -65,9 +45,6 @@
   (column-number-mode)
   (savehist-mode)
 
-  (setq-default ispell-program-name "aspell")
-  (ispell-change-dictionary "american" t)  
-
   (set-language-environment "UTF-8")
   (set-default-coding-systems 'utf-8)
   (setq
@@ -96,7 +73,7 @@
     ;; the documentation can get bent imo
     use-short-answers t
     ;; eke out a little more scrolling performance
-;;    fast-but-imprecise-scrolling t
+    fast-but-imprecise-scrolling nil
     ;; prefer newer elisp files
     load-prefer-newer t
     ;; when I say to quit, I mean quit
@@ -129,8 +106,7 @@
   (setq-default indent-tabs-mode nil)
 #+END_SRC 
 ** backup config
-#+BEGIN_SRC emacs-lisp
-  
+#+BEGIN_SRC emacs-lisp  
 ;; store all backup and autosave files in the tmp dir
   (setq backup-directory-alist
     `((".*" . ,temporary-file-directory)))
@@ -175,62 +151,6 @@ doomemacs: https://github.com/doomemacs/themes
 #+END_SRC
 
 * common
-** org mode
-see more https://orgmode.org/
-#+BEGIN_SRC emacs-lisp
-  
-  (use-package org
-  :ensure t
-  :pin org)
-
-  ;; this config for linux
-  ;; (setenv "BROWSER" "chromium-browser")
-  (use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-
-  ;; this config for linux
-  ;; (setq org-file-apps (append '(
-  ;; ("\\.pdf\\'" . "evince %s")
-  ;; ("\\.x?html?\\'" . "/usr/bin/chromium-browser %s")
-  ;; ) org-file-apps ))`
-
-
-  (setq org-agenda-files (list "~/Dropbox/Org/schedule.org"
-                                 "~/.emacs.d/org/course.org"
-                                 "~/.emacs.d/org/exercise.org"
-                                 "~/.emacs.d/org/gtd.org"
-                                 "~/.emacs.d/org/social.org"
-                                 "~/.emacs.d/org/project.org"))
-
-  ;; Multiple keyword sets in one file
-  (setq org-todo-keywords
-    '((sequence "TODO" "IN-PROGRESS" "WAIT" "|" "DONE")
-      (sequencee "REPORT" "BUG" "KNOWNCAUSE" "|" "FIXED")
-      (sequence "|" "CANCELED")))
-
-  (setq org-todo-keyword-faces 
-    '(("TODO" . (:foreground "orange" :weight bold)) 
-      ("REPORT" . (:foreground "orange" :weight bold))
-      ("IN-PROGRESS" . "cyan")
-      ("BUG" . "cyan")
-      ("KNOWNCAUSE" . "cyan")
-      ("DONE" . "green")
-      ("FIXED" . "green")
-      ("CANCELED" . (:foreground "blue" :weight bold))))
-
-  (setq org-tag-alist '((:startgroup . nil)
-                          ("@work" . ?w)
-                          ("@home" . ?h)
-                          ("@course" . ?c)
-                          ("@social" . ?s)
-                          (:endgroup . nil)
-                          ("laptop" . ?l)
-                          ("pc" . ?p)))
-
-#+END_SRC 
-
 ** fancy narrow
 #+BEGIN_SRC emacs-lisp
   (use-package fancy-narrow
@@ -242,7 +162,6 @@ see more https://orgmode.org/
 
 ** icon
 #+BEGIN_SRC emacs-lisp
-  
   (ignore-errors (set-frame-font "JuliaMono-12"))
 
   (use-package all-the-icons
@@ -261,16 +180,34 @@ see more https://orgmode.org/
 
 ** linum
 #+BEGIN_SRC emacs-lisp
-
   (use-package linum
   :ensure t
   :config
   :bind (("C-c l" . linum-mode)))
 #+END_SRC
 
-** treemacs
+** vertico
+see more, https://github.com/minad/vertico
 #+BEGIN_SRC emacs-lisp
-
+  (use-package vertico
+  :ensure t
+  :config
+  (vertico-mode)
+  (vertico-mouse-mode)
+  :custom
+  (vertico-count 22)
+  (vertico-cycle t)
+  :bind (:map vertico-map
+              ("C-v e" . #'vertico-quick-exit)
+              ("C-v c" . #'vertico-quick-insert)
+              ("C-v w" . #'exit-minibuffer)
+              ("C-v i" . #'vertico-insert)
+              ("C-v v" . #'vertico)
+              ("C-v d" . #'vertico-directory-delete-char)))
+#+END_SRC
+** treemacs
+see more, https://github.com/Alexander-Miller/treemacs
+#+BEGIN_SRC emacs-lisp
   (use-package treemacs
   :ensure t
   :bind (
@@ -311,6 +248,90 @@ see more https://orgmode.org/
   :hook (dired-mode . all-the-icons-dired-mode))
 #+END_SRC
 
+** vterm
+#+BEGIN_SRC emacs-lisp
+  (use-package vterm
+  :defer
+  :ensure t
+  :bind ("C-x g" . vterm))
+#+END_SRC
+** consult
+#+BEGIN_SRC emacs-lisp
+  (use-package consult
+  :ensure t
+  :config
+  (defun pt/yank-pop ()
+    "As pt/yank, but calling consult-yank-pop."
+    (interactive)
+    (let ((point-before (point)))
+      (consult-yank-pop)
+      (indent-region point-before (point))))
+
+  :bind (("C-c i"     . #'consult-imenu)
+         ("C-c r"     . #'consult-recent-file)
+         ("C-c y"     . #'pt/yank-pop)
+         ("C-c R"     . #'consult-bookmark)
+         ("C-c `"     . #'consult-flymake)
+         ("C-c h"     . #'consult-ripgrep)
+         ("C-x C-f"   . #'find-file)
+         ("C-c C-h a" . #'consult-apropos)
+         )
+  :custom
+  (completion-in-region-function #'consult-completion-in-region)
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref)
+  (consult-project-root-function #'deadgrep--project-root) ;; ensure ripgrep works
+  )
+#+END_SRC
+
+** marginalia
+#+BEGIN_SRC emacs-lisp
+  (use-package marginalia
+  :ensure t
+  :init (marginalia-mode +1))
+#+END_SRC
+** orderless
+#+BEGIN_SRC emacs-lisp
+  (use-package orderless
+  :ensure t
+  :custom (completion-styles `(orderless basic)))
+#+END_SRC
+
+** crtlf
+#+BEGIN_SRC emacs-lisp
+  (use-package ctrlf
+  :ensure t
+  :init (ctrlf-mode +1))
+#+END_SRC
+
+** prescient
+#+BEGIN_SRC emacs-lisp
+  (use-package prescient
+  :ensure t)
+#+END_SRC
+
+** ace 
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-window
+  :ensure t
+  :config 
+  (setq aw-scope 'frame)
+  (setq aw-background nil)
+  (global-set-key (kbd "C-c a") 'ace-window)
+  (ace-window-display-mode)
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+
+  (use-package ace-jump-mode
+  :ensure t
+  :bind ("C-." . ace-jump-mode))
+
+  (use-package ace-flyspell
+  :ensure t
+  :bind
+  (:map flyspell-mode-map
+      ("C-M-i" . ace-flyspell-correct-word)))
+#+END_SRC
+
 * editor
 ** undo
 #+BEGIN_SRC emacs-lisp
@@ -327,6 +348,19 @@ see more https://orgmode.org/
 
 ** helm
 #+BEGIN_SRC emacs-lisp
+  (use-package ag
+  :defer
+  :ensure t)
+
+  (use-package helm-ag
+  :ensure t
+  :after ag)
+
+  (use-package helm-projectile
+  :ensure t
+  :after helm
+  :config (helm-projectile-on))
+
   (use-package helm
   :ensure t
   :diminish helm-mode
@@ -338,14 +372,13 @@ see more https://orgmode.org/
   ("C-x r b" . helm-filtered-bookmarks)
   ("C-x C-f" . helm-find-files)
   :init
-  (helm-mode 1)
+  (helm-mode +1)
   (customize-set-variable 'helm-ff-lynx-style-map t))
 #+END_SRC
 
 ** magit
 see more, https://magit.vc/
 #+BEGIN_SRC emacs-lisp
-
   (use-package magit
   :ensure t
   :diminish magit-autorevert-mode
@@ -397,10 +430,11 @@ see more, https://magit.vc/
     (defvar bug-reference-auto-setup-functions '()))
 
 
-;;  (use-package libgit 
-;;  :ensure t
-;;  :after magit)
-  
+  (use-package libgit
+  :delight
+  :ensure t
+  :after magit)
+
   (use-package magit-libgit
   :ensure t
   :after (magit libgit))
@@ -417,9 +451,9 @@ see more, https://magit.vc/
   :ensure t
   :bind ("C-c x t" . git-timemachine)) 
 #+END_SRC
+
 ** rainbow
 #+BEGIN_SRC emacs-lisp
-  
   (use-package rainbow-delimiters
   :ensure t
   :hook
@@ -434,17 +468,46 @@ see more, https://magit.vc/
   (use-package anzu
   :ensure t
   :delight
-  :bind (
+  :bind  (
     ("C-x r i" . anzu-isearch-query-replace)     
     ("C-x r a" . anzu-query-replace))
   :config
   (global-anzu-mode 1))
-#+END_SRC 
+#+END_SRC
+** prodigy
+#+BEGIN_SRC emacs-lisp
+  (use-package prodigy
+  :ensure t
+  :bind (("C-c 8" . #'prodigy)
+           :map prodigy-view-mode-map
+           ("$" . #'end-of-buffer))
+  :custom (prodigy-view-truncate-by-default t)
+  :config
+  ;;  (load "~/.emacs.d/services.el" 'noerror))
+    (prodigy-define-tag
+    :name 'pulumi
+    :ready-message "Pulumi!!!")
+    (prodigy-define-tag
+     :name 'operator
+     :ready-message "Matrixone Operator!!!")
+
+    (prodigy-define-service
+     :name "pulumi up"
+     :command "pulumi"
+     :args '("up", "--yes")
+     :cwd "~/Documents/matrixone-operator/"
+     :tags '(pulumi))
+  )
+#+END_SRC
+
+** miniedit
+#+BEGIN_SRC emacs-lisp
+  (use-package miniedit
+  :ensure t)
+#+END_SRC
 * programming
-programming config
 ** lsp
 #+BEGIN_SRC emacs-lisp
-
   (setq lsp-log-io nil) ;; Don't log everything = speed
   (setq lsp-keymap-prefix "C-c j")
   (setq lsp-restart 'auto-restart)
@@ -467,7 +530,6 @@ programming config
 
 ** tree sitter
 #+BEGIN_SRC emacs-lisp
-  
   (use-package tree-sitter
   :ensure t
   :hook (
@@ -483,7 +545,6 @@ programming config
 
 ** rust
 #+BEGIN_SRC emacs-lisp
-
   (use-package rust-mode
   :defer
   :ensure t
@@ -528,7 +589,6 @@ programming config
 
 ** toml
 #+BEGIN_SRC emacs-lisp
-  
   (use-package toml-mode
   :defer
   :ensure t)
@@ -536,7 +596,6 @@ programming config
 
 ** markdown
 #+BEGIN_SRC emacs-lisp
-
   (use-package markdown-mode
   :defer
   :ensure t
@@ -546,7 +605,6 @@ programming config
 
 ** go
 #+BEGIN_SRC emacs-lisp
-
   (use-package go-mode
   :defer
   :ensure t
@@ -560,3 +618,4 @@ programming config
   :hook
   (go-mode . lsp))
 #+END_SRC
+
