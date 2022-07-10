@@ -404,6 +404,28 @@ See more, https://www.flycheck.org/en/latest/
   :ensure t)
 #+END_SRC
 
+** yasnippet
+see more, https://github.com/joaotavora/yasnippet
+#+BEGIN_SRC emacs-lisp
+  (setq-default abbrev-mode 1)
+
+  (use-package yasnippet
+  :ensure t
+  :config
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (yas-global-mode +1))
+
+  ;; a collection of yasnippet snippets for many languages
+  (use-package yasnippet-snippets
+  :after yasnippet
+  :ensure t)
+
+  (use-package ivy-yasnippet
+  :after (ivy yasnippet)
+  :ensure t
+  :bind ("C-c w" . ivy-yasnippet))
+#+END_SRC
+
 * editor
 ** undo
 #+BEGIN_SRC emacs-lisp
