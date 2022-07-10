@@ -367,6 +367,43 @@ see more, https://github.com/Alexander-Miller/treemacs
     ))
 #+END_SRC
 
+** flycheck
+See more, https://www.flycheck.org/en/latest/
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+  :ensure t
+  :init 
+  :config
+  ;; Disable the error indicator on the fringe
+  (setq flycheck-indication-mode nil)
+
+  ;; Disable automatic syntax check on new line
+  (setq flycheck-syntax-automatically '(save 
+  idle-change 
+  mode-enable))
+
+  ;; Immediate syntax checking quite annoying. Slow it down a bit.
+  (setq flycheck-idle-change-delay 2.0)
+
+  ;; Customize faces (Colors are copied from solarized definitions
+
+  (set-face-attribute 'flycheck-warning nil
+  :background "#b58900"
+  :foreground "#262626"
+  :underline nil)
+
+  (set-face-attribute 'flycheck-error nil
+  :background "dc322f"
+  :foreground "#262626"
+  :underline nil)
+
+  (global-flycheck-mode t))
+
+  (use-package flycheck-irony
+  :defer
+  :ensure t)
+#+END_SRC
+
 * editor
 ** undo
 #+BEGIN_SRC emacs-lisp
