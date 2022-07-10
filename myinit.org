@@ -2,6 +2,23 @@
 #+PROPERTY: header-args :comments yes :results silent
 
 * pre config
+** ispell
+#+BEGIN_SRC emacs-lisp
+  (setq ispell-program-name "hunspell")
+  ;; reset the hunspell so it STOPS querying locale!
+  ;; "en_US" is the key to lookup in `ispell-local-dictionary-alist`
+  (setq ispell-local-dictionary "en_US")
+  ;; two dictionaries "en_US" and "zh_CN" are used. Feel free to remove "zh_CN"
+  ;; If `ispell-local-dictionary-alist' is nil, `ispell-local-dictionary' is passed
+  ;; to hunpsell cli program as dictionary.
+  (setq ispell-local-dictionary-alist
+      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US" "zh_CN") nil utf-8)))
+  ;; new variable `ispell-hunspell-dictionary-alist' is defined in Emacs
+  ;; If it's nil, Emacs tries to automatically set up the dictionaries.
+  (when (boundp 'ispell-hunspell-dictionary-alist)
+      (setq ispell-hunspell-dictionary-alist ispell-local-dictionary-alist))
+#+END_SRC
+
 ** editor config
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-messsage t)
@@ -432,6 +449,16 @@ see more, https://github.com/killdash9/better-shell
            ("C-c q" . better-shell-remote-open)))
 #+END_SRC
 
+** flyspell
+see more, http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html
+#+BEGIN_SRC emacs-lisp
+  (use-package flyspell
+  :ensure t
+  :hook
+  (prog-mode . flyspell-prog-mode)
+  (text-mode . flyspell-mode))
+#+END_SRC
+
 * editor
 ** undo
 #+BEGIN_SRC emacs-lisp
@@ -763,3 +790,26 @@ see more, http://company-mode.github.io/
 #+END_SRC
 
 
+
+** yaml
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode
+  :defer
+  :ensure t
+  :mode (("\\.yml\\'" . yaml-mode)
+           ("\\.yaml\\'" . yaml-mode))
+  :init
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+#+END_SRC
+
+** json
+#+BEGIN_SRC emacs-lisp
+  (use-package json-mode
+  :defer
+  :ensure t)
+#+END_SRC
+
+** docker
+#+BEGIN_SRC emacs-lisp
+  
+#+END_SRC
