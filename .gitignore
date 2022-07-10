@@ -12,6 +12,7 @@ org/
 undo/
 myinit.el
 .lsp-session-v1
+persp-confs/
 history
 projectile-bookmarks.*
 var/
