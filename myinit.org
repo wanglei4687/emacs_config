@@ -112,7 +112,8 @@
   ;; We need the setq-default here because this becomes
   ;; a buffer-local variable when set.
   (setq-default indent-tabs-mode nil)
-#+END_SRC 
+#+END_SRC
+
 ** backup config
 #+BEGIN_SRC emacs-lisp  
 ;; store all backup and autosave files in the tmp dir
@@ -122,6 +123,7 @@
     `((".*" ,temporary-file-directory t)))
 
 #+END_SRC
+
 ** helpful
 #+BEGIN_SRC emacs-lisp
 
@@ -240,6 +242,7 @@ see more, https://github.com/minad/vertico
               ("C-v v" . #'vertico)
               ("C-v d" . #'vertico-directory-delete-char)))
 #+END_SRC
+
 ** treemacs
 see more, https://github.com/Alexander-Miller/treemacs
 #+BEGIN_SRC emacs-lisp
@@ -290,6 +293,7 @@ see more, https://github.com/Alexander-Miller/treemacs
   :ensure t
   :bind ("C-x g" . vterm))
 #+END_SRC
+
 ** consult
 #+BEGIN_SRC emacs-lisp
   (use-package consult
@@ -325,6 +329,7 @@ see more, https://github.com/Alexander-Miller/treemacs
   :ensure t
   :init (marginalia-mode 1))
 #+END_SRC
+
 ** orderless
 #+BEGIN_SRC emacs-lisp
   (use-package orderless
@@ -448,15 +453,6 @@ develop/config, https://joaotavora.github.io/yasnippet/snippet-development.html
   :bind ("C-c w" . ivy-yasnippet))
 #+END_SRC
 
-** better shell
-see more, https://github.com/killdash9/better-shell
-#+BEGIN_SRC emacs-lisp
-  (use-package better-shell
-  :ensure t
-  :bind (("C-c s " . better-shell-shell) 
-           ("C-c q" . better-shell-remote-open)))
-#+END_SRC
-
 ** flyspell
 see more, http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html
 #+BEGIN_SRC emacs-lisp
@@ -487,7 +483,23 @@ see more, http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html
   (savehist-mode 1))
 #+END_SRC
 
+** goto
+#+BEGIN_SRC emacs-lisp
+  (use-package goto-line-preview
+  :ensure t
+  :bind (("C-c g". goto-line-preview)))
+#+END_SRC
+
 * editor
+** better shell
+see more, https://github.com/killdash9/better-shell
+#+BEGIN_SRC emacs-lisp
+  (use-package better-shell
+  :ensure t
+  :bind (("C-c s " . better-shell-shell) 
+           ("C-c q" . better-shell-remote-open)))
+#+END_SRC
+
 ** undo
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
@@ -660,6 +672,7 @@ see more, https://magit.vc/
   (use-package miniedit
   :ensure t)
 #+END_SRC
+
 ** company
 see more, http://company-mode.github.io/
 #+BEGIN_SRC emacs-lisp
@@ -819,7 +832,7 @@ each window has a size that is not convenient for editing.
   :ensure t
   :hook (rust-mode . lsp)
   :bind
-  ("C-c g" . rust-run)
+  ("C-c e" . rust-run)
   ("C-c t" . rust-test)
   ("C-c b" . cargo-process-build)
   :config
