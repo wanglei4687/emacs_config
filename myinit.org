@@ -426,6 +426,15 @@ see more, https://github.com/joaotavora/yasnippet
   :bind ("C-c w" . ivy-yasnippet))
 #+END_SRC
 
+** better shell
+see more, https://github.com/killdash9/better-shell
+#+BEGIN_SRC emacs-lisp
+  (use-package better-shell
+  :ensure t
+  :bind (("C-c s " . better-shell-shell) 
+           ("C-c q" . better-shell-remote-open)))
+#+END_SRC
+
 * editor
 ** undo
 #+BEGIN_SRC emacs-lisp
@@ -754,4 +763,5 @@ see more, http://company-mode.github.io/
   :hook
   (go-mode . lsp))
 #+END_SRC
+
 
