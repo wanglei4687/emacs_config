@@ -2,6 +2,12 @@
 #+PROPERTY: header-args :comments yes :results silent
 
 * pre config
+** uniquify
+#+BEGIN_SRC emacs-lisp
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'reverse)
+#+END_SRC
+
 ** ispell
 #+BEGIN_SRC emacs-lisp
   (setq ispell-program-name "aspell")
@@ -15,6 +21,7 @@
   (setq inhibit-startup-messsage t)
   (global-set-key (kbd "<f5>") 'revert-buffer)
   (fset 'yes-or-no-p 'y-or-n-p)
+  (setq-default frame-title-format "%b (%f)")
   
   ;; cursor
   (setq-default cursor-type 'bar)
@@ -332,9 +339,7 @@ see more, https://github.com/Alexander-Miller/treemacs
 
 ** orderless
 #+BEGIN_SRC emacs-lisp
-  (use-package orderless
-  :ensure t
-  :custom (completion-styles `(orderless basic)))
+  
 #+END_SRC
 
 ** crtlf
@@ -676,7 +681,6 @@ see more, https://magit.vc/
 ** company
 see more, http://company-mode.github.io/
 #+BEGIN_SRC emacs-lisp
-
   (use-package company
   :ensure t
   :hook (emacs-lisp-mode . company-mode)
@@ -727,22 +731,11 @@ each window has a size that is not convenient for editing.
 #+END_SRC
 
 ** loccur
+loccur is Emacs minor mode for navigating through the file like occur does,
+but without opening a new window.
 #+BEGIN_SRC emacs-lisp
-   (defun gpolonkai/toggle-loccur ()
-   "Toggle `loccur-mode'.
-
-   If `loccur-mode' is not active, starts it (which, in turn, will ask for the
-   pattern to look for).  If it is active, it will disable it."
-     (interactive)
-     (if loccur-mode
-	  (loccur-mode nil)
-	(call-interactively 'loccur)))
-
    (use-package loccur
-   :ensure t
-   :bind
-     (:map gpolonkai/pers-map
-      ("C-c a" . gpolonkai/toggle-loccur)))
+   :ensure t)
 #+END_SRC
 
 ** form feed
