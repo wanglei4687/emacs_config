@@ -138,11 +138,12 @@
   (use-package which-key
   :ensure t
   :config
-  (which-key-mode +1))
+  (which-key-mode 1))
 
 #+END_SRC 
 
 * theme and modeline
+** doom and doom-modeline
 see more https://github.com/hlissner/emacs-doom-themes
 doomemacs: https://github.com/doomemacs/themes
 #+BEGIN_SRC emacs-lisp
@@ -165,6 +166,26 @@ doomemacs: https://github.com/doomemacs/themes
 #+END_SRC
 
 * common
+** eldoc and xref
+#+BEGIN_SRC emacs-lisp
+  (use-package xref
+  :ensure t
+  :pin gnu
+  :bind (("s-r" . #'xref-find-references)
+           ("C-c C-g f" . #'xref-find-definitions)
+           ("C-c C-g r" . #'xref-find-references)
+           ("C-c C-g b" . #'xref-go-back)
+           ("s-[" . #'xref-go-back)
+           ("s-]" . #'xref-go-forward)))
+
+  (use-package eldoc
+  :ensure t
+  :pin gnu
+  :diminish
+  :bind ("s-d" . #'eldoc)
+  :custom (eldoc-echo-area-prefer-doc-buffer t))
+#+END_SRC
+
 ** fancy narrow
 #+BEGIN_SRC emacs-lisp
   (use-package fancy-narrow
@@ -302,7 +323,7 @@ see more, https://github.com/Alexander-Miller/treemacs
 #+BEGIN_SRC emacs-lisp
   (use-package marginalia
   :ensure t
-  :init (marginalia-mode +1))
+  :init (marginalia-mode 1))
 #+END_SRC
 ** orderless
 #+BEGIN_SRC emacs-lisp
@@ -315,7 +336,7 @@ see more, https://github.com/Alexander-Miller/treemacs
 #+BEGIN_SRC emacs-lisp
   (use-package ctrlf
   :ensure t
-  :init (ctrlf-mode +1))
+  :init (ctrlf-mode 1))
 #+END_SRC
 
 ** prescient
@@ -402,10 +423,6 @@ See more, https://www.flycheck.org/en/latest/
   :underline nil)
 
   (global-flycheck-mode t))
-
-  (use-package flycheck-irony
-  :defer
-  :ensure t)
 #+END_SRC
 
 ** yasnippet
@@ -418,7 +435,7 @@ develop/config, https://joaotavora.github.io/yasnippet/snippet-development.html
   :ensure t
   :config
   (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-  (yas-global-mode +1))
+  (yas-global-mode 1))
 
   ;; a collection of yasnippet snippets for many languages
   (use-package yasnippet-snippets
@@ -450,6 +467,26 @@ see more, http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html
   (text-mode . flyspell-mode))
 #+END_SRC
 
+** auto revert
+#+BEGIN_SRC emacs-lisp
+  (use-package autorevert
+  :ensure t
+  :config
+  (global-auto-revert-mode 1))
+
+  (use-package electric
+  :ensure t
+  :defer
+  :config
+  (electric-indent-mode 1))
+
+  (use-package savehist
+  :ensure t
+  :defer
+  :config
+  (savehist-mode 1))
+#+END_SRC
+
 * editor
 ** undo
 #+BEGIN_SRC emacs-lisp
@@ -467,7 +504,6 @@ see more, http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html
 ** helm
 #+BEGIN_SRC emacs-lisp
   (use-package ag
-  :defer
   :ensure t)
 
   (use-package helm-ag
@@ -490,7 +526,7 @@ see more, http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html
   ("C-x r b" . helm-filtered-bookmarks)
   ("C-x C-f" . helm-find-files)
   :init
-  (helm-mode +1)
+  (helm-mode 1)
   (customize-set-variable 'helm-ff-lynx-style-map t))
 #+END_SRC
 
@@ -590,7 +626,7 @@ see more, https://magit.vc/
     ("C-x r i" . anzu-isearch-query-replace)     
     ("C-x r a" . anzu-query-replace))
   :config
-  (global-anzu-mode +1))
+  (global-anzu-mode 1))
 #+END_SRC
 
 ** prodigy
@@ -641,7 +677,7 @@ see more, http://company-mode.github.io/
   :ensure t
   :after company
   :config
-  (company-prescient-mode +1))
+  (company-prescient-mode 1))
 
   (use-package company-irony
   :defer
@@ -664,6 +700,78 @@ see more, http://company-mode.github.io/
   :after company
   :config
   (add-to-list 'company-backends 'company-emoji))
+#+END_SRC
+
+** golden ratio
+When working with many windows at the same time,
+each window has a size that is not convenient for editing.
+#+BEGIN_SRC emacs-lisp
+  (use-package golden-ratio
+  :ensure t
+  :config
+  (add-to-list 'golden-ratio-extra-commands 'ace-window)
+  (golden-ratio-mode 1))
+#+END_SRC
+
+** loccur
+#+BEGIN_SRC emacs-lisp
+   (defun gpolonkai/toggle-loccur ()
+   "Toggle `loccur-mode'.
+
+   If `loccur-mode' is not active, starts it (which, in turn, will ask for the
+   pattern to look for).  If it is active, it will disable it."
+     (interactive)
+     (if loccur-mode
+	  (loccur-mode nil)
+	(call-interactively 'loccur)))
+
+   (use-package loccur
+   :ensure t
+   :bind
+     (:map gpolonkai/pers-map
+      ("C-c a" . gpolonkai/toggle-loccur)))
+#+END_SRC
+
+** form feed
+#+BEGIN_SRC emacs-lisp
+  (use-package form-feed
+  :ensure t
+  :hook
+  (emacs-lisp-mode . form-feed-mode)
+  (compilation-mode . form-feed-mode)
+  (help-mode . form-feed-mode))
+#+END_SRC
+
+** multi-cursors
+#+BEGIN_SRC emacs-lisp
+  (defun gpolonkai/no-blink-matching-paren ()
+    (customize-set-variable 'blink-matching-paren nil))
+
+  (defun gpolonkai/blink-matching-paren ()
+    (customize-set-variable 'blink-matching-paren t))
+
+  (use-package multiple-cursors
+  :ensure t
+  :init
+    (defvar gpolonkai/mc-prefix-map (make-sparse-keymap)
+      "Prefix keymap for multiple-cursors")
+    (define-prefix-command 'gpolonkai/mc-prefix-map)
+    (define-key global-map (kbd "C-c m") 'gpolonkai/mc-prefix-map)
+  :hook
+    (multiple-cursors-mode-enabled . gpolonkai/no-blink-matching-paren)
+    (multiple-cursors-mode-disabled . gpolonkai/blink-matching-paren)
+  :bind
+    (:map gpolonkai/mc-prefix-map
+     ("t" . mc/mark-all-like-this)
+     ("m" . mc/mark-all-like-this-dwim)
+     ("l" . mc/edit-lines)
+     ("e" . mc/edit-ends-of-lines)
+     ("a" . mc/edit-beginnings-of-lines)
+     ("n" . mc/mark-next-like-this)
+     ("p" . mc/mark-previous-like-this)
+     ("s" . mc/mark-sgml-tag-pair)
+     ("d" . mc/mark-all-like-this-in-defun)
+     ("M-<mouse-1>" . mc/add-cursor-on-click)))
 #+END_SRC
 
 * programming
@@ -780,8 +888,6 @@ see more, http://company-mode.github.io/
   (go-mode . lsp))
 #+END_SRC
 
-
-
 ** yaml
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
@@ -802,5 +908,37 @@ see more, http://company-mode.github.io/
 
 ** docker
 #+BEGIN_SRC emacs-lisp
-  
+  (use-package dockerfile-mode
+  :defer
+  :ensure t)
+#+END_SRC
+
+** irony
+A C/C++ minor mode for Emacs powered by libclang
+see more, https://github.com/Sarcasm/irony-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package irony
+  :defer
+  :ensure t
+  :config
+  (progn
+    (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'c-mode-hook 'irony-mode)
+    (add-hook 'objc-mode-hook 'irony-mode)
+
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  ))
+
+  (use-package flycheck-irony
+  :defer
+  :after (irony flycheck)
+  :ensure t)
+#+END_SRC
+
+** editor config
+#+BEGIN_SRC emacs-lisp
+  (use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
 #+END_SRC
