@@ -1,6 +1,8 @@
 # -*- mode: snippet -*-
 # name: bash_header
 # key: bash
+# contributor: wanglei <wanglei4687@gmail.com>
+# binding: C-c C-c C-a
 # --
 #!/usr/bin/env bash
 
