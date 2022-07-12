@@ -517,6 +517,28 @@ see more, http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html
   :bind (("C-c g". goto-line-preview)))
 #+END_SRC
 
+** smartparent
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+  :ensure t
+  :hook ((prog-mode . smartparens-mode)
+           (emacs-lisp-mode . smartparens-strict-mode))
+  :init
+  (setq sp-base-key-bindings 'sp)
+  :config
+  (define-key smartparens-mode-map [M-backspace] #'backward-kill-word)
+  (define-key smartparens-mode-map [M-S-backspace] #'sp-backward-unwrap-sexp)
+  (require 'smartparens-config))
+#+END_SRC
+
+** ws-butler
+#+BEGIN_SRC emacs-lisp
+  (use-package ws-butler
+  :ensure t
+  :hook ((text-mode . ws-butler-mode)
+         (prog-mode . ws-butler-mode)))
+#+END_SRC
+
 * editor
 ** better shell
 see more, https://github.com/killdash9/better-shell
@@ -821,8 +843,15 @@ but without opening a new window.
   ("M-t" . 'lsp-find-type-definition)
   ("M-?" . 'lsp-find-references))
 
+  (use-package lsp-treemacs
+  :commands lsp-treemacs-errors-list)
+
+
   (use-package lsp-ui
-  :ensure t)
+  :hook lsp-mode
+  :ensure t
+  :config
+  (lsp-doc-show))
 #+END_SRC
 
 ** tree sitter
@@ -968,5 +997,7 @@ see more, https://github.com/Sarcasm/irony-mode
   (use-package editorconfig
   :ensure t
   :config
-  (editorconfig-mode 1))
+  (editorconfig-mode 1)
+  (setq editorconfig-trim-whitespaces-mode
+        'ws-butler-mode))
 #+END_SRC
