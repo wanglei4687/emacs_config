@@ -616,6 +616,7 @@ see more, https://magit.vc/
     ("C-c x u" . magit-pull)
     ("C-c x y" . magit-branch-checkout)
     ("C-c x a" . magit-branch-and-checkout)
+    ("C-c x h" . magit-commit-amend)
   ))
 
   (use-package forge
@@ -664,7 +665,7 @@ see more, https://magit.vc/
 
   (use-package git-timemachine
   :ensure t
-  :bind ("C-c x t" . git-timemachine)) 
+  :bind ("C-c x t" . git-timemachine))
 #+END_SRC
 
 ** rainbow
@@ -846,6 +847,10 @@ but without opening a new window.
   (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list)
 
+  ;; https://github.com/emacs-lsp/dap-mode
+  (use-package dap-mode
+  :defer
+  :commands (dap-debug dap-debug-edit-template))
 
   (use-package lsp-ui
   :hook lsp-mode
