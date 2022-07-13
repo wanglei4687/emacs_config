@@ -856,7 +856,7 @@ but without opening a new window.
   :hook lsp-mode
   :ensure t
   :config
-  (lsp-doc-show))
+  (lsp-ui-doc-show))
 #+END_SRC
 
 ** tree sitter
