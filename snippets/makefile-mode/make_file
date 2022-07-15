@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: make_file
+# key: make
+# contributor: wanglei <wanglei4687@gmail.com>
+# binding: C-c C-c C-b
+# --
+MAKEFLAGS += --warn-undefined-variables
+SHELL := bash
+.SHELLFLAGS := -eu -o pipefail -c
+.DEFAULT_GOAL := all
+.DELETE_ON_ERROR:
+.SUFFIXES:
+
+include make/build.mk
+
+.PHONY:
