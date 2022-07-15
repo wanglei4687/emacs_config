@@ -990,3 +990,20 @@ see more, https://github.com/Sarcasm/irony-mode
   (setq editorconfig-trim-whitespaces-mode
         'ws-butler-mode))
 #+END_SRC
+
+** lean
+#+BEGIN_SRC emacs-lisp
+  (use-package lean-mode
+  :defer
+  :ensure t)
+
+  (use-package helm-lean
+  :defer
+  :after (lean-mode helm)
+  :ensure t)
+
+  (use-package company-lean
+  :defer
+  :after (lean-mode company)
+  :ensure t)
+#+END_SRC
