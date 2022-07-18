@@ -638,6 +638,7 @@ see more, https://magit.vc/
      ("C-c v s" . forge-edit-topic-state)
      ("C-c v g" . forge-merge)
      ("C-c v y" . forge-create-pullreq)
+     ("C-c v b" . forge-edit-post)
    ))
 
   ;; Hack to eliminate weirdness
