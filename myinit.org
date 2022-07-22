@@ -163,7 +163,7 @@ doomemacs: https://github.com/doomemacs/themes
   (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-zenburn t)
+  (load-theme 'doom-ayu-dark t)
   (doom-themes-treemacs-config)
   (doom-themes-org-config)
   (setq doom-themes-treemacs-theme "doom-colors"))
