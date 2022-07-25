@@ -1012,3 +1012,18 @@ see more, https://github.com/Sarcasm/irony-mode
   :after (lean-mode company)
   :ensure t)
 #+END_SRC
+
+* org
+** org mode
+#+BEGIN_SRC emacs-lisp
+  （use-package org
+    :config
+    (require 'os-basic)
+    (unless (functionp 'org-link-make-string)
+      (fset 'org-link-make-string 'org-make-link-string ))
+    )
+#+END_SRC
+
+** org roam
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
