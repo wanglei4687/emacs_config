@@ -361,7 +361,11 @@ see more,https://github.com/jojojames/dired-sidebar
 
 ** orderless
 #+BEGIN_SRC emacs-lisp
-  
+  (use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 #+END_SRC
 
 ** crtlf
